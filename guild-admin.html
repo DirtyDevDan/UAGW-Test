@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Secure United Azeroth officer command center.">
+  <title>United Azeroth | Officer Command</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false">☰</button>
+  <aside class="sidebar">
+    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">UA</span><span class="brand-text"><strong>United Azeroth</strong><span>Guild Community</span></span></a>
+    <nav class="nav" aria-label="Primary"><a href="index.html">Home</a><a href="dashboard.html">My Dashboard</a><a href="members.html">Members</a><a href="schedule.html">Events</a><a href="availability.html">Availability</a><a href="keys.html">Mythic+ Keys</a><a href="rules.html">Guild Rules</a><a href="recruitment.html">Recruitment</a><a href="guild-admin.html" aria-current="page">Officer Command</a></nav>
+    <p class="sidebar-note">One secure place for leadership and event operations.</p>
+  </aside>
+  <main class="page admin-page" id="main"><div class="page-inner">
+    <section class="account-loading" id="ops-loading"><span class="admin-crest">UA</span><p>Checking officer permissions…</p></section>
+    <section class="account-setup panel" id="ops-denied" hidden><p class="eyebrow">Officer Access</p><h1>Leadership authorization required</h1><p id="ops-denied-message">Sign in with an active officer account to continue.</p><a class="button" href="dashboard.html">Open member sign in</a></section>
+    <section id="ops-dashboard" hidden>
+      <header class="admin-header command-header">
+        <div><p class="eyebrow">Alliance Leadership</p><h1 class="page-title">Officer command</h1><p class="lede" id="ops-permission-summary">Manage guild operations from one synchronized workspace.</p></div>
+        <div class="admin-identity panel"><span id="ops-rank"></span><strong id="ops-email"></strong><button class="text-button" id="ops-signout" type="button">Sign out</button></div>
+      </header>
+      <div class="command-layout">
+        <nav class="command-nav panel" aria-label="Officer tools">
+          <p class="command-nav-label">Operations</p>
+          <button class="command-nav-item" data-panel="overview-panel" aria-current="page"><span>Overview</span><small>Guild at a glance</small></button>
+          <button class="command-nav-item" data-panel="events-panel"><span>Calendar</span><small>Events and capacity</small></button>
+          <button class="command-nav-item" data-panel="rules-panel"><span>Raid rules</span><small>Raid and Mythic+</small></button>
+          <button class="command-nav-item" data-panel="roster-panel"><span>Raid roster</span><small>Confirm sign-ups</small></button>
+          <button class="command-nav-item" data-panel="attendance-panel"><span>Attendance</span><small>Record participation</small></button>
+          <p class="command-nav-label" data-leader-only>Guild leadership</p>
+          <button class="command-nav-item" data-panel="members-panel" data-leader-only><span>Members</span><small>Ranks and status</small></button>
+          <button class="command-nav-item" data-panel="applications-panel" data-leader-only><span>Applications</span><small>Recruitment review</small></button>
+          <button class="command-nav-item" data-panel="announcements-panel" data-leader-only><span>Announcements</span><small>Guild dispatch</small></button>
+          <button class="command-nav-item" data-panel="content-panel" data-leader-only><span>Website content</span><small>Homepage messaging</small></button>
+          <button class="command-nav-item" data-panel="audit-panel" data-leader-only><span>Audit log</span><small>Leadership history</small></button>
+        </nav>
+        <div class="command-workspace">
+          <section class="command-panel" id="overview-panel">
+            <div class="admin-section-heading"><div><p class="eyebrow">Command Summary</p><h2>Guild at a glance</h2></div><span class="live-status">Live with Supabase</span></div>
+            <div class="command-stats" id="command-stats"></div>
+            <div class="command-quick-grid">
+              <button class="quick-action panel" type="button" data-open-panel="events-panel"><strong>Add or update an event</strong><span>Publish directly to the guild calendar.</span></button>
+              <button class="quick-action panel" type="button" data-open-panel="rules-panel"><strong>Review team standards</strong><span>Keep raid and Mythic+ expectations current.</span></button>
+              <button class="quick-action panel" type="button" data-open-panel="roster-panel"><strong>Build the next roster</strong><span>Confirm, bench, or decline sign-ups.</span></button>
+              <button class="quick-action panel" type="button" data-open-panel="applications-panel" data-leader-only><strong>Review applicants</strong><span>Move recruits into active membership.</span></button>
+            </div>
+          </section>
+          <section class="command-panel" id="events-panel" hidden>
+            <div class="admin-section-heading"><div><p class="eyebrow">Shared Calendar</p><h2>Events</h2></div><button class="button" id="new-shared-event" type="button">Add event</button></div>
+            <div class="event-admin-grid"><div class="admin-list panel" id="shared-event-list"></div><form class="editor-card panel" id="shared-event-form" hidden>
+              <input id="shared-event-id" type="hidden"><div class="editor-heading"><h3 id="shared-event-title">Add event</h3><button class="dialog-close inline-close" id="close-shared-event" type="button" aria-label="Close event editor">×</button></div>
+              <div class="form-row"><label>Title<input id="shared-title" required maxlength="80"></label><label>Category<select id="shared-category"><option value="raid">Raid</option><option value="mythic">Mythic+</option><option value="pvp">PvP</option><option value="transmog">Transmog</option><option value="meeting">Meeting</option><option value="social">Social</option></select></label></div>
+              <div class="form-row three"><label>Starts<input id="shared-start" type="datetime-local" required></label><label>Minutes<input id="shared-duration" type="number" value="120" min="15" max="720"></label><label>Repeats<select id="shared-recurrence"><option value="none">Does not repeat</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option></select></label></div>
+              <div class="form-row"><label>Location<input id="shared-location"></label><label>Organizer<input id="shared-organizer"></label></div><label>Description<textarea id="shared-description" rows="3"></textarea></label><label>Requirements<textarea id="shared-requirements" rows="2"></textarea></label>
+              <div class="form-row three"><label>Tank cap<input id="shared-tanks" type="number" value="2" min="0"></label><label>Healer cap<input id="shared-healers" type="number" value="4" min="0"></label><label>DPS cap<input id="shared-dps" type="number" value="14" min="0"></label></div>
+              <p class="form-message" id="shared-event-message" role="status"></p><div class="editor-actions"><button class="button" type="submit">Publish event</button><button class="button secondary" id="delete-shared-event" type="button" hidden>Delete</button></div>
+            </form></div>
+          </section>
+          <section class="command-panel" id="rules-panel" hidden>
+            <div class="admin-section-heading"><div><p class="eyebrow">Team Standards</p><h2>Raid &amp; Mythic+ rules</h2></div></div>
+            <form class="rules-editor panel" id="shared-rules-form"><label>Raid rules <span>One rule per line</span><textarea id="shared-raid-rules" rows="9"></textarea></label><label>Mythic+ rules <span>One rule per line</span><textarea id="shared-mythic-rules" rows="9"></textarea></label><p class="form-message" id="shared-rules-message" role="status"></p><button class="button" type="submit">Publish rule changes</button></form>
+          </section>
+          <section class="command-panel" id="roster-panel" hidden>
+            <div class="admin-section-heading"><div><p class="eyebrow">Team Builder</p><h2>Raid roster</h2></div><label class="compact-select">Event<select id="shared-roster-event"></select></label></div>
+            <div class="roster-builder" id="shared-roster-builder"></div><p class="form-message" id="shared-roster-message" role="status"></p><button class="button" id="save-shared-roster" type="button">Save roster decisions</button>
+          </section>
+          <section class="command-panel" id="attendance-panel" hidden>
+            <div class="admin-section-heading"><div><p class="eyebrow">Participation</p><h2>Attendance</h2></div><label class="compact-select">Event<select id="shared-attendance-event"></select></label></div>
+            <form class="attendance-sheet panel" id="shared-attendance-form"><div class="attendance-head"><span>Character</span><span>Role</span><span>Status</span><span>Officer note</span></div><div id="shared-attendance-rows"></div><p class="form-message" id="shared-attendance-message" role="status"></p><button class="button" type="submit">Save attendance</button></form>
+          </section>
+          <section class="command-panel" id="members-panel" hidden>
+            <div class="admin-section-heading"><div><p class="eyebrow">Guild Leadership</p><h2>Member access</h2></div><span class="count-badge" id="shared-member-count"></span></div><div class="member-admin-list panel" id="shared-member-list"></div>
+          </section>
+          <section class="command-panel" id="applications-panel" hidden>
+            <div class="admin-section-heading"><div><p class="eyebrow">Recruitment</p><h2>Applications</h2></div><span class="count-badge" id="shared-application-count"></span></div><div class="application-list" id="shared-application-list"></div>
+          </section>
+          <section class="command-panel" id="announcements-panel" hidden>
+            <div class="admin-section-heading"><div><p class="eyebrow">Guild Dispatch</p><h2>Announcements</h2></div></div>
+            <div class="announcement-admin-layout"><form class="editor-card panel" id="shared-announcement-form"><input id="shared-announcement-id" type="hidden"><label>Headline<input id="shared-announcement-title" required maxlength="80"></label><label>Category<select id="shared-announcement-category"><option>Guild</option><option>Raid</option><option>Mythic+</option><option>Community</option><option>Recruitment</option></select></label><label>Message<textarea id="shared-announcement-body" rows="4" required></textarea></label><label class="check-label"><input id="shared-announcement-pinned" type="checkbox"> Pin announcement</label><div class="editor-actions"><button class="button" type="submit">Publish</button><button class="button secondary" id="cancel-shared-announcement" type="button" hidden>Cancel edit</button></div></form><div class="admin-list panel" id="shared-announcement-list"></div></div>
+          </section>
+          <section class="command-panel" id="content-panel" hidden>
+            <div class="admin-section-heading"><div><p class="eyebrow">Website Content</p><h2>Homepage messaging</h2></div></div>
+            <form class="site-editor panel" id="shared-content-form"><label>Homepage headline<input id="shared-home-headline" maxlength="90"></label><label>Homepage introduction<textarea id="shared-home-lede" rows="4"></textarea></label><label>Sidebar message<textarea id="shared-sidebar-message" rows="3"></textarea></label><p class="form-message" id="shared-content-message" role="status"></p><button class="button" type="submit">Publish website changes</button></form>
+          </section>
+          <section class="command-panel" id="audit-panel" hidden>
+            <div class="admin-section-heading"><div><p class="eyebrow">Accountability</p><h2>Officer audit log</h2></div><button class="button secondary" id="export-shared-audit" type="button">Export CSV</button></div><div class="audit-table panel" id="shared-audit-list"></div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </div></main>
+  <script src="script.js"></script><script src="supabase-config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-operations-admin.js"></script>
+</body>
+</html>

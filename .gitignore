@@ -1,0 +1,12 @@
+# Obsolete browser-only administration demo
+admin.html
+admin.js
+admin-ops.js
+README.txt
+portal.js
+
+# Local and editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

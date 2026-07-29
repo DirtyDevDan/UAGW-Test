@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Meet the members and characters of United Azeroth.">
+  <title>United Azeroth | Members</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a><button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false">☰</button>
+  <aside class="sidebar"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">UA</span><span class="brand-text"><strong>United Azeroth</strong><span>Guild Community</span></span></a>
+    <nav class="nav" aria-label="Primary"><a href="index.html">Home</a><a href="dashboard.html">My Dashboard</a><a href="members.html" aria-current="page">Members</a><a href="schedule.html">Events</a><a href="availability.html">Availability</a><a href="keys.html">Mythic+ Keys</a><a href="rules.html">Guild Rules</a><a href="recruitment.html">Recruitment</a><a href="guild-admin.html">Shared Operations</a></nav>
+    <p class="sidebar-note">Many characters. One guild community.</p>
+  </aside>
+  <main class="page" id="main"><div class="page-inner">
+    <header class="content-header member-hero"><div><p class="eyebrow">Guild Directory</p><h1 class="page-title">Meet the guild</h1><p class="lede">Find tanks, healers, damage dealers, crafters, and new friends for your next adventure.</p></div>
+      <label class="member-search">Search members<input id="member-search" type="search" placeholder="Name, class, role, or profession"></label>
+    </header>
+    <div class="member-filter" id="member-filter" role="group" aria-label="Filter members by role"><button class="active" data-role="all" type="button">All</button><button data-role="Tank" type="button">Tanks</button><button data-role="Healer" type="button">Healers</button><button data-role="DPS" type="button">DPS</button></div>
+    <section class="member-directory" id="member-directory" aria-live="polite"></section>
+  </div></main>
+  <dialog id="member-dialog" aria-labelledby="member-dialog-name"><form method="dialog"><button class="dialog-close" aria-label="Close member profile">×</button></form><div id="member-dialog-content"></div><form method="dialog"><button class="button">Close profile</button></form></dialog>
+  <script src="script.js"></script><script src="supabase-config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-shared.js"></script>
+</body>
+</html>

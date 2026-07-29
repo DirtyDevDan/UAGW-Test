@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en" data-shared-calendar>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Browse upcoming raids, Mythic+ nights, PvP, social events, and more on the United Azeroth guild calendar.">
+  <title>United Azeroth | Guild Event Calendar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false">☰</button>
+  <aside class="sidebar">
+    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">UA</span><span class="brand-text"><strong>United Azeroth</strong><span>Guild Community</span></span></a>
+    <nav class="nav" aria-label="Primary"><a href="index.html">Home</a><a href="dashboard.html">My Dashboard</a><a href="members.html">Members</a><a href="schedule.html" aria-current="page">Events</a><a href="availability.html">Availability</a><a href="keys.html">Mythic+ Keys</a><a href="rules.html">Guild Rules</a><a href="recruitment.html">Recruitment</a><a href="guild-admin.html">Shared Operations</a></nav>
+    <p class="sidebar-note">Times shown in realm time. Confirm attendance and role in Discord.</p>
+  </aside>
+
+  <main class="page calendar-page" id="main">
+    <div class="page-inner">
+      <header class="content-header calendar-hero">
+        <div>
+          <p class="eyebrow">For the Alliance</p>
+          <h1 class="page-title">Guild event calendar</h1>
+          <p class="lede">Find your next adventure, from progression raids and key nights to old-content runs and relaxed guild socials.</p>
+        </div>
+        <div class="calendar-key panel" aria-label="Calendar information">
+          <span class="key-label">Realm time</span>
+          <strong>US · Pacific</strong>
+          <span>Sign-ups close 1 hour before start</span>
+        </div>
+      </header>
+
+      <section class="calendar-shell panel" aria-labelledby="calendar-heading">
+        <div class="calendar-toolbar">
+          <div class="month-controls">
+            <button class="icon-button" id="previous-month" type="button" aria-label="View previous month">‹</button>
+            <h2 id="calendar-heading" aria-live="polite"></h2>
+            <button class="icon-button" id="next-month" type="button" aria-label="View next month">›</button>
+            <button class="today-button" id="today-button" type="button">Today</button>
+          </div>
+          <p class="calendar-summary" id="calendar-summary" aria-live="polite"></p>
+        </div>
+
+        <fieldset class="filter-group">
+          <legend>Filter events</legend>
+          <div class="filter-list" id="filter-list"></div>
+        </fieldset>
+
+        <div class="weekday-row" aria-hidden="true">
+          <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+        </div>
+        <div class="calendar-grid" id="calendar-grid" role="grid" aria-labelledby="calendar-heading"></div>
+      </section>
+
+      <section class="upcoming-section" aria-labelledby="upcoming-heading">
+        <div class="section-heading">
+          <div><p class="eyebrow">Rally the guild</p><h2 id="upcoming-heading">Coming up next</h2></div>
+          <p>Open an event for full details, requirements, and sign-up notes.</p>
+        </div>
+        <div class="upcoming-list" id="upcoming-list"></div>
+      </section>
+    </div>
+  </main>
+
+  <dialog class="event-dialog" id="event-dialog" aria-labelledby="event-dialog-title">
+    <form method="dialog"><button class="dialog-close" aria-label="Close event details">×</button></form>
+    <div class="dialog-category" id="event-dialog-category"></div>
+    <h2 id="event-dialog-title"></h2>
+    <p class="dialog-time" id="event-dialog-time"></p>
+    <p id="event-dialog-description"></p>
+    <dl class="event-facts">
+      <div><dt>Meet at</dt><dd id="event-dialog-location"></dd></div>
+      <div><dt>Organizer</dt><dd id="event-dialog-lead"></dd></div>
+      <div><dt>What to bring</dt><dd id="event-dialog-requirements"></dd></div>
+    </dl>
+    <p class="dialog-note">Reserve your spot and choose your role in the guild Discord.</p>
+    <section class="event-signup" aria-labelledby="signup-heading"><h3 id="signup-heading">Reserve your role</h3><div class="signup-counts" id="signup-counts"></div><form id="event-signup-form"><div class="form-row"><label>Character<select id="signup-character" required><option value="">Sign in to choose a character</option></select></label><label>Role<select id="signup-role" required><option>Tank</option><option>Healer</option><option>DPS</option><option>Bench</option><option>Tentative</option></select></label></div><p class="form-message" id="signup-message" role="status"></p><button class="button" type="submit">Save RSVP</button></form></section>
+    <div class="dialog-actions"><button class="button secondary" id="download-event" type="button">Download calendar event</button><form method="dialog"><button class="button secondary" type="submit">Close</button></form></div>
+  </dialog>
+
+  <script src="script.js"></script><script src="supabase-config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-shared.js"></script><script src="planner.js"></script>
+</body>
+</html>

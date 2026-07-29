@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Apply to join the United Azeroth World of Warcraft guild.">
+  <title>United Azeroth | Recruitment</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a><button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false">☰</button>
+  <aside class="sidebar"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">UA</span><span class="brand-text"><strong>United Azeroth</strong><span>Guild Community</span></span></a>
+    <nav class="nav" aria-label="Primary"><a href="index.html">Home</a><a href="dashboard.html">My Dashboard</a><a href="members.html">Members</a><a href="schedule.html">Events</a><a href="availability.html">Availability</a><a href="keys.html">Mythic+ Keys</a><a href="rules.html">Guild Rules</a><a href="recruitment.html" aria-current="page">Recruitment</a><a href="guild-admin.html">Shared Operations</a></nav>
+    <p class="sidebar-note">Bring the player, not only the character.</p>
+  </aside>
+  <main class="page" id="main"><div class="page-inner">
+    <header class="content-header"><p class="eyebrow">Join the Alliance</p><h1 class="page-title">Find your place here</h1><p class="lede">Tell us how you enjoy Azeroth. An officer will review your application and follow up through Discord.</p></header>
+    <div class="recruit-layout">
+      <section class="recruit-callout panel"><p class="eyebrow">Currently Seeking</p><h2>Players who value the team</h2><ul><li>Reliable healers for progression</li><li>Flexible ranged DPS</li><li>Mythic+ players at every key level</li><li>Social members and achievement hunters</li></ul><p>Exceptional applicants of every class and role are always welcome.</p></section>
+      <form class="recruit-form panel" id="recruitment-form">
+        <div class="form-row"><label>Character name<input id="apply-name" required maxlength="30"></label><label>Email address<input id="apply-email" type="email" required></label></div>
+        <label>Discord username<input id="apply-discord" required maxlength="40"></label>
+        <div class="form-row three"><label>Class<input id="apply-class" required></label><label>Main role<select id="apply-role" required><option>Tank</option><option>Healer</option><option>DPS</option><option>Flexible</option></select></label><label>Item level<input id="apply-ilvl" type="number" min="1" max="999" required></label></div>
+        <label>What are you looking for in a guild?<textarea id="apply-goals" rows="4" required></textarea></label>
+        <label>Tell us about your experience<textarea id="apply-experience" rows="4" required></textarea></label>
+        <label class="check-label"><input id="apply-agree" type="checkbox" required> I have read and agree to follow the guild rules.</label>
+        <p class="form-message" id="application-message" role="status"></p><button class="button" type="submit">Submit application</button>
+      </form>
+    </div>
+  </div></main>
+  <script src="script.js"></script><script src="supabase-config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-shared.js"></script>
+</body>
+</html>
