@@ -3,48 +3,45 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="United Azeroth is a welcoming World of Warcraft guild built around teamwork, progression, and community.">
-  <title>United Azeroth | Home</title>
+  <meta name="description" content="Join United Azeroth, a welcoming Alliance World of Warcraft guild for raids, Mythic+, progression, and community.">
+  <title>United Azeroth | Alliance Guild Community</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
-  <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false">☰</button>
-  <aside class="sidebar">
-    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">UA</span><span class="brand-text"><strong>United Azeroth</strong><span>Guild Community</span></span></a>
-    <nav class="nav" aria-label="Primary">
-      <a href="index.html" aria-current="page">Home</a>
-      <a href="dashboard.html">My Dashboard</a>
-      <a href="members.html">Members</a>
-      <a href="schedule.html">Events</a>
-      <a href="availability.html">Availability</a>
-      <a href="keys.html">Mythic+ Keys</a>
-      <a href="rules.html">Guild Rules</a>
-      <a href="recruitment.html">Recruitment</a>
-      <a href="guild-admin.html">Officer Command</a>
-    </nav>
-    <p class="sidebar-note" id="home-sidebar-message">Experienced players. Shared adventures. One united community.</p>
-  </aside>
+  <div data-site-shell data-current="home"></div>
   <main class="page" id="main">
     <div class="page-inner hero-home">
-      <p class="eyebrow">World of Warcraft Guild</p>
-      <h1 class="page-title" id="home-headline">Welcome to United Azeroth.</h1>
-      <p class="lede" id="home-lede">Where experienced players unite to defeat the foes of Azeroth—and make every run, raid, and late-night laugh better together.</p>
+      <p class="eyebrow">Alliance Guild · North America</p>
+      <h1 class="page-title" id="home-headline">Find your people. Face Azeroth together.</h1>
+      <p class="lede" id="home-lede">United Azeroth is a welcoming World of Warcraft community for players who want organized progression, reliable groups, and friendships that last beyond the final pull.</p>
       <div class="hero-actions">
-        <a class="button" href="schedule.html">Explore guild events</a>
-        <a class="button secondary" href="rules.html">Read our code</a>
+        <a class="button" href="recruitment.html">Apply to join</a>
+        <a class="button secondary" href="schedule.html">Explore guild events</a>
       </div>
+      <dl class="guild-facts" aria-label="Guild at a glance">
+        <div><dt>Region</dt><dd>North America</dd></div>
+        <div><dt>Faction</dt><dd>Alliance</dd></div>
+        <div><dt>Schedule</dt><dd>Weeknight &amp; weekend events</dd></div>
+        <div><dt>Focus</dt><dd>Raids, Mythic+ &amp; community</dd></div>
+      </dl>
       <section class="feature-grid" aria-label="Guild highlights">
+        <article class="feature recruitment-card"><span class="feature-label">Recruiting now</span><strong>Healers &amp; dependable DPS</strong><p>We welcome exceptional applicants of every class, with particular interest in players who enjoy organized group content.</p><a href="recruitment.html">View recruitment details →</a></article>
         <article class="feature"><strong>Progress Together</strong><p>Mythic+, raids, delves, and more—organized around cooperation and steady improvement.</p></article>
-        <article class="feature"><strong>Find Your People</strong><p>A community where members can ask for help, form groups, and enjoy the game at their pace.</p></article>
         <article class="feature"><strong>Respect the Team</strong><p>Clear expectations keep our Discord, events, and everyday play welcoming and focused.</p></article>
       </section>
-      <section class="home-announcements" aria-labelledby="announcement-heading"><div class="section-heading"><div><p class="eyebrow">Guild Dispatch</p><h2 id="announcement-heading">Latest announcements</h2></div><a href="schedule.html">View the calendar →</a></div><div class="announcement-grid" id="public-announcements"></div></section>
+      <section class="home-events" aria-labelledby="home-events-heading">
+        <div class="section-heading"><div><p class="eyebrow">Coming Up</p><h2 id="home-events-heading">Your next adventure</h2></div><a href="schedule.html">Full calendar →</a></div>
+        <div class="home-event-list" id="home-upcoming-events" aria-live="polite"><div class="loading-state"><span class="loading-pulse" aria-hidden="true"></span><span>Loading upcoming events…</span></div></div>
+      </section>
+      <section class="home-announcements" aria-labelledby="announcement-heading">
+        <div class="section-heading"><div><p class="eyebrow">Guild Dispatch</p><h2 id="announcement-heading">Latest announcements</h2></div><a href="schedule.html">View the calendar →</a></div>
+        <div class="announcement-grid" id="public-announcements"><div class="loading-state"><span class="loading-pulse" aria-hidden="true"></span><span>Loading announcements…</span></div></div>
+      </section>
     </div>
   </main>
-  <script src="script.js"></script><script src="supabase-config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-shared.js"></script>
+  <script src="supabase-config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="site-shell.js"></script><script src="script.js"></script><script src="supabase-shared.js"></script>
 </body>
 </html>

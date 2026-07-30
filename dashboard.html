@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Private United Azeroth member dashboard."><title>United Azeroth | Member Account</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css"></head>
-<body><a class="skip-link" href="#main">Skip to content</a><button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false">☰</button>
-<aside class="sidebar"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">UA</span><span class="brand-text"><strong>United Azeroth</strong><span>Guild Community</span></span></a><nav class="nav" aria-label="Primary"><a href="index.html">Home</a><a href="dashboard.html" aria-current="page">My Dashboard</a><a href="members.html">Members</a><a href="schedule.html">Events</a><a href="availability.html">Availability</a><a href="keys.html">Mythic+ Keys</a><a href="rules.html">Guild Rules</a><a href="recruitment.html">Recruitment</a><a href="guild-admin.html">Officer Command</a></nav><p class="sidebar-note">Your private guild account and characters.</p></aside>
-<main class="page account-page" id="main"><div class="page-inner">
+<body>
+  <div data-site-shell data-current="dashboard"></div>
+  <main class="page account-page" id="main"><div class="page-inner">
   <section class="account-loading" id="account-loading"><span class="admin-crest">UA</span><p>Preparing your guild account…</p></section>
   <section class="account-setup panel" id="account-setup" hidden><p class="eyebrow">Supabase Setup Required</p><h1>Connect your guild database</h1><p>This build is ready for Supabase, but the project URL and public publishable key have not been added yet.</p><ol><li>Create a Supabase project.</li><li>Run <strong>supabase-schema.sql</strong> in the SQL Editor.</li><li>Copy <strong>supabase-config.example.js</strong> to <strong>supabase-config.js</strong> and add your project values.</li></ol><p class="setup-error" id="setup-error"></p></section>
   <section class="account-auth" id="account-auth" hidden>
@@ -28,4 +28,4 @@
     <section class="account-panel" id="account-profile" role="tabpanel" hidden><div class="admin-section-heading"><div><p class="eyebrow">Account Details</p><h2>Member profile</h2></div></div><form class="profile-editor panel" id="profile-form"><label>Display name<input id="profile-display-name" required maxlength="30"></label><label>Discord username<input id="profile-discord" maxlength="50"></label><label>About me<textarea id="profile-bio" rows="5" maxlength="500"></textarea></label><label>Profile visibility<select id="profile-visibility"><option value="guild">Visible to signed-in guild members</option><option value="private">Private to me and leadership</option></select></label><p class="form-message" id="profile-message" role="status"></p><button class="button" type="submit">Save profile</button></form></section>
   </section>
 </div></main>
-<script src="script.js"></script><script src="supabase-config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-auth.js"></script></body></html>
+<script src="supabase-config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="site-shell.js"></script><script src="script.js"></script><script src="supabase-auth.js"></script></body></html>

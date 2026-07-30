@@ -8,12 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to content</a><button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false">☰</button>
-  <aside class="sidebar">
-    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">UA</span><span class="brand-text"><strong>United Azeroth</strong><span>Guild Community</span></span></a>
-    <nav class="nav" aria-label="Primary"><a href="index.html">Home</a><a href="dashboard.html">My Dashboard</a><a href="roster.html" aria-current="page">Officers</a><a href="members.html">Members</a><a href="schedule.html">Events</a><a href="availability.html">Availability</a><a href="keys.html">Mythic+ Keys</a><a href="rules.html">Guild Rules</a><a href="recruitment.html">Recruitment</a><a href="guild-admin.html">Officer Command</a></nav>
-    <p class="sidebar-note">Leadership is here to guide events, support members, and protect the community.</p>
-  </aside>
+  <div data-site-shell data-current="officers"></div>
   <main class="page" id="main"><div class="page-inner">
     <header class="content-header"><p class="eyebrow">Guild Leadership</p><h1 class="page-title">Meet the officers</h1><p class="lede">The players who coordinate the team and help keep United Azeroth moving forward. Select an officer to view their profile.</p></header>
     <section class="roster" aria-label="Guild officers">
@@ -25,6 +20,5 @@
   <dialog id="mage-profile"><div class="profile-layout"><img src="images/mage.png" alt=""><div><p class="eyebrow">Guild Leader</p><h2>TheNakedMage</h2><p>Frost Mage and leader of United Azeroth.</p><form method="dialog"><button class="button" type="submit">Close profile</button></form></div></div></dialog>
   <dialog id="priest-profile"><div class="profile-layout"><img src="images/priest.png" alt=""><div><p class="eyebrow">Officer</p><h2>Iteirin</h2><p>Holy Priest and guild officer.</p><form method="dialog"><button class="button" type="submit">Close profile</button></form></div></div></dialog>
   <dialog id="omega-profile"><div class="profile-layout"><img src="images/demonhunter.png" alt=""><div><p class="eyebrow">Admin &amp; Raid Co-leader</p><h2>Omega</h2><p>Havoc Demon Hunter supporting guild administration and raid leadership.</p><form method="dialog"><button class="button" type="submit">Close profile</button></form></div></div></dialog>
-  <script src="script.js"></script>
-</body>
+<script src="supabase-config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="site-shell.js"></script><script src="script.js"></script></body>
 </html>

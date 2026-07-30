@@ -7,12 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to content</a><button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false">☰</button>
-  <aside class="sidebar">
-    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">UA</span><span class="brand-text"><strong>United Azeroth</strong><span>Guild Community</span></span></a>
-    <nav class="nav" aria-label="Primary"><a href="index.html">Home</a><a href="dashboard.html">My Dashboard</a><a href="members.html">Members</a><a href="schedule.html">Events</a><a href="availability.html">Availability</a><a href="keys.html">Mythic+ Keys</a><a href="rules.html" aria-current="page">Guild Rules</a><a href="recruitment.html">Recruitment</a><a href="guild-admin.html">Officer Command</a></nav>
-    <p class="sidebar-note">Our code exists to keep the community welcoming, useful, and fun.</p>
-  </aside>
+  <div data-site-shell data-current="rules"></div>
   <main class="page" id="main"><div class="page-inner">
     <header class="content-header"><p class="eyebrow">Code of Conduct</p><h1 class="page-title">Guild rules</h1><p class="lede">Support the team, communicate with respect, and help make United Azeroth a community where people want to stay.</p></header>
     <section class="rules-grid" aria-label="Guild code of conduct">
@@ -34,6 +29,6 @@
   </div></main>
   <button class="quote-button" type="button" data-dialog="community-quote" aria-label="Open community reminder"><img src="images/cat-emblem.png" alt=""></button>
   <dialog id="community-quote"><p class="eyebrow">A reminder from Kold's Dad</p><h2>Keep the spirit alive</h2><p>Have fun making friends, work together as a team, and enjoy the effort that goes into making this community a thriving environment.</p><form method="dialog"><button class="button" type="submit">Close</button></form></dialog>
-  <script src="script.js"></script><script src="supabase-config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-shared.js"></script>
+  <script src="supabase-config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="site-shell.js"></script><script src="script.js"></script><script src="supabase-shared.js"></script>
 </body>
 </html>
