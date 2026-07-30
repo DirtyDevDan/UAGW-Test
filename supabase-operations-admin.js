@@ -89,7 +89,8 @@
     if (!error) { await audit(id ? "Updated" : "Created", "Calendar event", record.title); event.target.hidden = true; await loadEvents(); loadOverview(); }
   });
   $("delete-shared-event").addEventListener("click", async () => {
-    const id = $("shared-event-id").value, item = events.find((entry) => entry.id === id); if (!id || !confirm(`Delete ${item?.title || "this event"}?`)) return;
+    const id = $("shared-event-id").value, item = events.find((entry) => entry.id === id);
+    if (!id || !window.confirm(`Delete ${item?.title || "this event"}? This also removes its RSVP and roster history and cannot be undone.`)) return;
     const { error } = await db.from("guild_events").delete().eq("id", id);
     if (!error) { await audit("Deleted", "Calendar event", item?.title); $("shared-event-form").hidden = true; await loadEvents(); loadOverview(); }
   });
@@ -157,6 +158,9 @@
     $("shared-member-list").innerHTML = members.map((item) => `<div class="member-admin-row"><div><strong>${esc(item.profiles?.display_name || "Member")}</strong><small>${esc(item.profiles?.discord_name || "No Discord listed")} · Joined ${new Date(item.joined_at).toLocaleDateString()}</small></div><label><span>Rank</span><select data-member-rank="${item.user_id}">${ranks.map((rank) => `<option ${rank === item.guild_rank ? "selected" : ""}>${rank}</option>`).join("")}</select></label><label><span>Status</span><select data-member-status="${item.user_id}"><option ${item.status === "pending" ? "selected" : ""}>pending</option><option ${item.status === "active" ? "selected" : ""}>active</option><option ${item.status === "suspended" ? "selected" : ""}>suspended</option></select></label><button class="button secondary compact-button" data-save-member="${item.user_id}" type="button">Save</button></div>`).join("") || `<p class="empty-state">No member accounts found.</p>`;
     document.querySelectorAll("[data-save-member]").forEach((button) => button.addEventListener("click", async () => {
       const memberId = button.dataset.saveMember, rank = document.querySelector(`[data-member-rank="${memberId}"]`).value, status = document.querySelector(`[data-member-status="${memberId}"]`).value;
+      const member = members.find((item) => item.user_id === memberId);
+      const memberName = member?.profiles?.display_name || "this member";
+      if (status === "suspended" && !window.confirm(`Suspend ${memberName}? They will immediately lose access to member-only guild data.`)) return;
       button.disabled = true; const { error } = await db.rpc("manage_guild_member", { p_user_id: memberId, p_rank: rank, p_status: status }); button.disabled = false;
       button.textContent = error ? "Try again" : "Saved"; if (!error) { setTimeout(() => { button.textContent = "Save"; }, 1500); loadOverview(); }
     }));
@@ -181,11 +185,21 @@
     $("shared-announcement-list").innerHTML = announcements.map((item) => `<button class="announcement-admin-row announcement-edit-row" type="button" data-edit-announcement="${item.id}"><span><small>${esc(item.category)}${item.pinned ? " · Pinned" : ""}</small><strong>${esc(item.title)}</strong></span><span aria-hidden="true">›</span></button>`).join("") || `<p class="empty-state">No announcements yet.</p>`;
     document.querySelectorAll("[data-edit-announcement]").forEach((button) => button.addEventListener("click", () => {
       const item = announcements.find((entry) => entry.id === button.dataset.editAnnouncement);
-      $("shared-announcement-id").value = item.id; $("shared-announcement-title").value = item.title; $("shared-announcement-category").value = item.category; $("shared-announcement-body").value = item.body; $("shared-announcement-pinned").checked = item.pinned; $("cancel-shared-announcement").hidden = false;
+      $("shared-announcement-id").value = item.id; $("shared-announcement-title").value = item.title; $("shared-announcement-category").value = item.category; $("shared-announcement-body").value = item.body; $("shared-announcement-pinned").checked = item.pinned; $("cancel-shared-announcement").hidden = false; $("delete-shared-announcement").hidden = false;
     }));
   }
-  function resetAnnouncement() { $("shared-announcement-form").reset(); $("shared-announcement-id").value = ""; $("cancel-shared-announcement").hidden = true; }
+  function resetAnnouncement() { $("shared-announcement-form").reset(); $("shared-announcement-id").value = ""; $("cancel-shared-announcement").hidden = true; $("delete-shared-announcement").hidden = true; }
   $("cancel-shared-announcement").addEventListener("click", resetAnnouncement);
+  $("delete-shared-announcement").addEventListener("click", async () => {
+    const id = $("shared-announcement-id").value;
+    const item = announcements.find((entry) => entry.id === id);
+    if (!id || !window.confirm(`Delete the announcement “${item?.title || "Untitled"}”? It will disappear from the homepage immediately and cannot be undone.`)) return;
+    const { error } = await db.from("guild_announcements").delete().eq("id", id);
+    if (error) { window.alert(error.message); return; }
+    await audit("Deleted", "Announcement", item?.title || "");
+    resetAnnouncement();
+    loadAnnouncements();
+  });
   $("shared-announcement-form").addEventListener("submit", async (event) => {
     event.preventDefault(); const id = $("shared-announcement-id").value;
     const record = { title: $("shared-announcement-title").value.trim(), category: $("shared-announcement-category").value, body: $("shared-announcement-body").value.trim(), pinned: $("shared-announcement-pinned").checked, published: true, updated_at: new Date().toISOString() };

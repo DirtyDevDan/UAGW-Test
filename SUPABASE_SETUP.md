@@ -14,9 +14,8 @@ Create the replacement Supabase project and wait for its database to finish prov
 ## 2. Create the guild tables
 
 Open **SQL Editor**, paste the complete contents of `supabase-schema.sql`, and
-run it once. Then run `supabase-shared-migration.sql`,
-`supabase-officer-command-migration.sql`, and
-`supabase-production-hardening.sql`, in that order.
+run it once. Then run `supabase-shared-migration.sql` and
+`supabase-officer-command-migration.sql`, in that order.
 
 The script creates:
 

@@ -152,6 +152,9 @@
   document.getElementById("delete-character").addEventListener("click", async () => {
     const id = document.getElementById("character-id").value;
     if (!id) return;
+    const name = document.getElementById("character-name").value.trim() || "this character";
+    if (!window.confirm(`Delete ${name}? This permanently removes the character from your account and cannot be undone.`)) return;
+    setMessage("character-message", `Deleting ${name}…`);
     const { error } = await client.from("characters").delete().eq("id", id);
     if (error) { setMessage("character-message", error.message, true); return; }
     document.getElementById("character-form").hidden = true; await loadAccount(); switchPanel("account-characters");

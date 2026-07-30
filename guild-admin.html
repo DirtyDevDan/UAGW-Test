@@ -9,13 +9,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
-  <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false">☰</button>
-  <aside class="sidebar">
-    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">UA</span><span class="brand-text"><strong>United Azeroth</strong><span>Guild Community</span></span></a>
-    <nav class="nav" aria-label="Primary"><a href="index.html">Home</a><a href="dashboard.html">My Dashboard</a><a href="members.html">Members</a><a href="schedule.html">Events</a><a href="availability.html">Availability</a><a href="keys.html">Mythic+ Keys</a><a href="rules.html">Guild Rules</a><a href="recruitment.html">Recruitment</a><a href="guild-admin.html" aria-current="page">Officer Command</a></nav>
-    <p class="sidebar-note">One secure place for leadership and event operations.</p>
-  </aside>
+  <div data-site-shell data-current="command"></div>
   <main class="page admin-page" id="main"><div class="page-inner">
     <section class="account-loading" id="ops-loading"><span class="admin-crest">UA</span><p>Checking officer permissions…</p></section>
     <section class="account-setup panel" id="ops-denied" hidden><p class="eyebrow">Officer Access</p><h1>Leadership authorization required</h1><p id="ops-denied-message">Sign in with an active officer account to continue.</p><a class="button" href="dashboard.html">Open member sign in</a></section>
@@ -81,7 +75,7 @@
           </section>
           <section class="command-panel" id="announcements-panel" hidden>
             <div class="admin-section-heading"><div><p class="eyebrow">Guild Dispatch</p><h2>Announcements</h2></div></div>
-            <div class="announcement-admin-layout"><form class="editor-card panel" id="shared-announcement-form"><input id="shared-announcement-id" type="hidden"><label>Headline<input id="shared-announcement-title" required maxlength="80"></label><label>Category<select id="shared-announcement-category"><option>Guild</option><option>Raid</option><option>Mythic+</option><option>Community</option><option>Recruitment</option></select></label><label>Message<textarea id="shared-announcement-body" rows="4" required></textarea></label><label class="check-label"><input id="shared-announcement-pinned" type="checkbox"> Pin announcement</label><div class="editor-actions"><button class="button" type="submit">Publish</button><button class="button secondary" id="cancel-shared-announcement" type="button" hidden>Cancel edit</button></div></form><div class="admin-list panel" id="shared-announcement-list"></div></div>
+            <div class="announcement-admin-layout"><form class="editor-card panel" id="shared-announcement-form"><input id="shared-announcement-id" type="hidden"><label>Headline<input id="shared-announcement-title" required maxlength="80"></label><label>Category<select id="shared-announcement-category"><option>Guild</option><option>Raid</option><option>Mythic+</option><option>Community</option><option>Recruitment</option></select></label><label>Message<textarea id="shared-announcement-body" rows="4" required></textarea></label><label class="check-label"><input id="shared-announcement-pinned" type="checkbox"> Pin announcement</label><div class="editor-actions"><button class="button" type="submit">Publish</button><button class="button secondary" id="cancel-shared-announcement" type="button" hidden>Cancel edit</button><button class="button danger-button" id="delete-shared-announcement" type="button" hidden>Delete announcement</button></div></form><div class="admin-list panel" id="shared-announcement-list"></div></div>
           </section>
           <section class="command-panel" id="content-panel" hidden>
             <div class="admin-section-heading"><div><p class="eyebrow">Website Content</p><h2>Homepage messaging</h2></div></div>
@@ -94,6 +88,6 @@
       </div>
     </section>
   </div></main>
-  <script src="script.js"></script><script src="supabase-config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-operations-admin.js"></script>
+  <script src="supabase-config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="site-shell.js"></script><script src="script.js"></script><script src="supabase-operations-admin.js"></script>
 </body>
 </html>
