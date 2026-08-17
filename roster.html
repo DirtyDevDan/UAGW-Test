@@ -5,20 +5,57 @@
   <meta name="description" content="Meet the United Azeroth guild leadership team.">
   <title>United Azeroth | Officers</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css?v=unified-home-20260817-3">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css?v=officer-circle-20260817-6">
 </head>
-<body>
+<body class="officers-surface">
   <div data-site-shell data-current="officers"></div>
-  <main class="page" id="main"><div class="page-inner">
-    <header class="content-header"><p class="eyebrow">Guild Leadership</p><h1 class="page-title">Meet the officers</h1><p class="lede">The players who coordinate the team and help keep United Azeroth moving forward. Select an officer to view their profile.</p></header>
-    <section class="roster" aria-label="Guild officers">
-      <button class="officer-card panel" type="button" data-dialog="mage-profile"><img src="images/mage.png" alt="TheNakedMage's mage character"><span class="officer-copy"><h2>TheNakedMage</h2><p>Guild Leader</p><span class="class-tag">Frost Mage</span></span></button>
-      <button class="officer-card panel" type="button" data-dialog="priest-profile"><img src="images/priest.png" alt="Iteirin's priest character"><span class="officer-copy"><h2>Iteirin</h2><p>Officer</p><span class="class-tag">Holy Priest</span></span></button>
-      <button class="officer-card panel" type="button" data-dialog="omega-profile"><img src="images/demonhunter.png" alt="Omega's demon hunter character"><span class="officer-copy"><h2>Omega</h2><p>Admin &amp; Raid Co-leader</p><span class="class-tag">Havoc Demon Hunter</span></span></button>
-    </section>
-  </div></main>
-  <dialog id="mage-profile"><div class="profile-layout"><img src="images/mage.png" alt=""><div><p class="eyebrow">Guild Leader</p><h2>TheNakedMage</h2><p>Frost Mage and leader of United Azeroth.</p><form method="dialog"><button class="button" type="submit">Close profile</button></form></div></div></dialog>
-  <dialog id="priest-profile"><div class="profile-layout"><img src="images/priest.png" alt=""><div><p class="eyebrow">Officer</p><h2>Iteirin</h2><p>Holy Priest and guild officer.</p><form method="dialog"><button class="button" type="submit">Close profile</button></form></div></div></dialog>
-  <dialog id="omega-profile"><div class="profile-layout"><img src="images/demonhunter.png" alt=""><div><p class="eyebrow">Admin &amp; Raid Co-leader</p><h2>Omega</h2><p>Havoc Demon Hunter supporting guild administration and raid leadership.</p><form method="dialog"><button class="button" type="submit">Close profile</button></form></div></div></dialog>
-<script src="supabase-config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="site-shell.js?v=arcane-home-20260817-1"></script><script src="script.js"></script></body>
+  <main class="page officers-page" id="main">
+    <div class="officers-shell">
+      <header class="officers-heading">
+        <p class="eyebrow">Guild Leadership</p>
+        <h1 class="page-title">Stand with the officers.</h1>
+        <p class="lede">Select a leader to bring their story forward.</p>
+      </header>
+      <section class="officer-stage" aria-label="United Azeroth guild officers">
+        <button class="officer-figure officer-priest" type="button" aria-expanded="false" aria-controls="iteirin-bio" aria-label="Iteirin, Holy Priest and guild officer. Open biography.">
+          <span class="officer-portrait" aria-hidden="true"><img src="images/priest.png" alt=""></span>
+          <span class="officer-identity"><span class="officer-name">Iteirin</span><span class="officer-role">Officer · Holy Priest</span></span>
+          <span class="officer-bio" id="iteirin-bio" hidden>
+            <span class="officer-bio-track">
+              <span class="officer-bio-copy"><span class="bio-kicker">Officer · Holy Priest</span><span class="bio-name">Iteirin</span><span class="bio-text">Iteirin helps keep the guild steady, welcoming, and ready for the next challenge. As a Holy Priest, they bring a calm presence to group content and support members who are finding their place in the team.</span><span class="bio-text">Their officer focus is clear communication, dependable support, and making sure every guildmate has room to grow.</span></span>
+              <span class="officer-bio-copy" aria-hidden="true"><span class="bio-kicker">Officer · Holy Priest</span><span class="bio-name">Iteirin</span><span class="bio-text">Iteirin helps keep the guild steady, welcoming, and ready for the next challenge. As a Holy Priest, they bring a calm presence to group content and support members who are finding their place in the team.</span><span class="bio-text">Their officer focus is clear communication, dependable support, and making sure every guildmate has room to grow.</span></span>
+            </span>
+            <span class="officer-bio-hint">Select again to close</span>
+          </span>
+        </button>
+
+        <button class="officer-figure officer-mage" type="button" aria-expanded="false" aria-controls="mage-bio" aria-label="TheNakedMage, Frost Mage and guild leader. Open biography.">
+          <span class="officer-portrait" aria-hidden="true"><img src="images/mage.png" alt=""></span>
+          <span class="officer-identity"><span class="officer-name">TheNakedMage</span><span class="officer-role">Guild Leader · Frost Mage</span></span>
+          <span class="officer-bio" id="mage-bio" hidden>
+            <span class="officer-bio-track">
+              <span class="officer-bio-copy"><span class="bio-kicker">Guild Leader · Frost Mage</span><span class="bio-name">TheNakedMage</span><span class="bio-text">TheNakedMage sets the direction for United Azeroth and keeps the officer team moving together. As a Frost Mage, they bring focused control to every fight and the same measured approach to guild leadership.</span><span class="bio-text">Their goal is a community where organized progression, reliable groups, and friendships all have equal space to thrive.</span></span>
+              <span class="officer-bio-copy" aria-hidden="true"><span class="bio-kicker">Guild Leader · Frost Mage</span><span class="bio-name">TheNakedMage</span><span class="bio-text">TheNakedMage sets the direction for United Azeroth and keeps the officer team moving together. As a Frost Mage, they bring focused control to every fight and the same measured approach to guild leadership.</span><span class="bio-text">Their goal is a community where organized progression, reliable groups, and friendships all have equal space to thrive.</span></span>
+            </span>
+            <span class="officer-bio-hint">Select again to close</span>
+          </span>
+        </button>
+
+        <button class="officer-figure officer-demonhunter" type="button" aria-expanded="false" aria-controls="omega-bio" aria-label="Omega, Havoc Demon Hunter, administrator, and raid co-leader. Open biography.">
+          <span class="officer-portrait" aria-hidden="true"><img src="images/demonhunter.png" alt=""></span>
+          <span class="officer-identity"><span class="officer-name">Omega</span><span class="officer-role">Admin &amp; Raid Co-leader · Havoc Demon Hunter</span></span>
+          <span class="officer-bio" id="omega-bio" hidden>
+            <span class="officer-bio-track">
+              <span class="officer-bio-copy"><span class="bio-kicker">Admin &amp; Raid Co-leader</span><span class="bio-name">Omega</span><span class="bio-text">Omega supports guild administration and helps lead the raid team from preparation through the final pull. As a Havoc Demon Hunter, they bring momentum, awareness, and a willingness to solve problems quickly.</span><span class="bio-text">Their leadership keeps plans organized, expectations clear, and the team ready to move as one.</span></span>
+              <span class="officer-bio-copy" aria-hidden="true"><span class="bio-kicker">Admin &amp; Raid Co-leader</span><span class="bio-name">Omega</span><span class="bio-text">Omega supports guild administration and helps lead the raid team from preparation through the final pull. As a Havoc Demon Hunter, they bring momentum, awareness, and a willingness to solve problems quickly.</span><span class="bio-text">Their leadership keeps plans organized, expectations clear, and the team ready to move as one.</span></span>
+            </span>
+            <span class="officer-bio-hint">Select again to close</span>
+          </span>
+        </button>
+      </section>
+      <p class="officer-stage-hint">Choose a character to reveal their biography</p>
+    </div>
+  </main>
+  <script src="supabase-config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="site-shell.js?v=arcane-home-20260817-1"></script><script src="script.js"></script><script src="officers.js?v=officer-circle-20260817-1"></script>
+</body>
 </html>
