@@ -32,15 +32,41 @@ body::before {
     linear-gradient(90deg, rgba(3, 5, 13, 0.96) 0%, rgba(5, 7, 18, 0.82) 34%, rgba(7, 8, 22, 0.38) 72%, rgba(5, 6, 15, 0.55) 100%),
     linear-gradient(0deg, rgba(3, 5, 11, 0.7), transparent 48%),
     url("images/arcane-mage-tower-background.png") 68% center / cover no-repeat;
+  animation: arcane-thunder 18s ease-in-out infinite;
+  will-change: filter;
 }
 
 body::after {
   content: "";
   position: fixed;
-  inset: 0;
+  inset: -18%;
   z-index: -1;
   pointer-events: none;
-  background: radial-gradient(circle at 72% 30%, rgba(120, 80, 255, 0.09), transparent 34%);
+  transform-origin: 76% 57%;
+  background:
+    radial-gradient(ellipse 18% 5% at 76% 57%, transparent 62%, rgba(115, 67, 255, 0.04) 64%, rgba(162, 119, 255, 0.34) 67%, rgba(69, 219, 255, 0.18) 69%, transparent 72%),
+    radial-gradient(ellipse 29% 9% at 76% 57%, transparent 65%, rgba(115, 67, 255, 0.04) 67%, rgba(130, 86, 255, 0.25) 70%, rgba(69, 219, 255, 0.1) 72%, transparent 75%),
+    radial-gradient(ellipse 40% 14% at 76% 57%, transparent 68%, rgba(112, 67, 255, 0.03) 70%, rgba(144, 88, 255, 0.18) 73%, transparent 76%),
+    radial-gradient(circle at 76% 38%, rgba(134, 92, 255, 0.18), transparent 21%),
+    radial-gradient(circle at 76% 57%, rgba(96, 59, 255, 0.08), transparent 39%);
+  mix-blend-mode: screen;
+  animation: arcane-spiral 22s linear infinite;
+  will-change: transform;
+}
+
+@keyframes arcane-thunder {
+  0%, 58%, 100% { filter: brightness(1) saturate(1); }
+  59% { filter: brightness(1.05) saturate(1.12); }
+  59.5% { filter: brightness(1.34) saturate(1.3); }
+  60.1% { filter: brightness(1.06) saturate(1.08); }
+  60.7% { filter: brightness(1.22) saturate(1.22); }
+  61.4% { filter: brightness(1) saturate(1); }
+}
+
+@keyframes arcane-spiral {
+  from { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.035); }
+  to { transform: rotate(360deg) scale(1); }
 }
 
 a { color: inherit; }
