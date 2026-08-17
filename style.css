@@ -28,8 +28,19 @@ body::before {
   position: fixed;
   inset: 0;
   z-index: -2;
-  background: linear-gradient(90deg, rgba(4, 6, 10, 0.94), rgba(4, 6, 10, 0.55)),
-    url("images/bg.jpg") center / cover no-repeat;
+  background:
+    linear-gradient(90deg, rgba(3, 5, 13, 0.96) 0%, rgba(5, 7, 18, 0.82) 34%, rgba(7, 8, 22, 0.38) 72%, rgba(5, 6, 15, 0.55) 100%),
+    linear-gradient(0deg, rgba(3, 5, 11, 0.7), transparent 48%),
+    url("images/arcane-mage-tower-background.png") 68% center / cover no-repeat;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(circle at 72% 30%, rgba(120, 80, 255, 0.09), transparent 34%);
 }
 
 a { color: inherit; }
