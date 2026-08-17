@@ -39,19 +39,10 @@ body::before {
 body::after {
   content: "";
   position: fixed;
-  inset: -18%;
+  inset: 0;
   z-index: -1;
   pointer-events: none;
-  transform-origin: 76% 57%;
-  background:
-    radial-gradient(ellipse 18% 5% at 76% 57%, transparent 62%, rgba(115, 67, 255, 0.04) 64%, rgba(162, 119, 255, 0.34) 67%, rgba(69, 219, 255, 0.18) 69%, transparent 72%),
-    radial-gradient(ellipse 29% 9% at 76% 57%, transparent 65%, rgba(115, 67, 255, 0.04) 67%, rgba(130, 86, 255, 0.25) 70%, rgba(69, 219, 255, 0.1) 72%, transparent 75%),
-    radial-gradient(ellipse 40% 14% at 76% 57%, transparent 68%, rgba(112, 67, 255, 0.03) 70%, rgba(144, 88, 255, 0.18) 73%, transparent 76%),
-    radial-gradient(circle at 76% 38%, rgba(134, 92, 255, 0.18), transparent 21%),
-    radial-gradient(circle at 76% 57%, rgba(96, 59, 255, 0.08), transparent 39%);
-  mix-blend-mode: screen;
-  animation: arcane-spiral 22s linear infinite;
-  will-change: transform;
+  background: radial-gradient(circle at 76% 48%, rgba(124, 79, 255, 0.14), transparent 32%);
 }
 
 @keyframes arcane-thunder {
@@ -63,10 +54,57 @@ body::after {
   61.4% { filter: brightness(1) saturate(1); }
 }
 
-@keyframes arcane-spiral {
-  from { transform: rotate(0deg) scale(1); }
-  50% { transform: rotate(180deg) scale(1.035); }
-  to { transform: rotate(360deg) scale(1); }
+
+.arcane-vortex {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.arcane-ribbon {
+  position: absolute;
+  top: 57%;
+  left: 76%;
+  width: clamp(250px, 32vw, 500px);
+  aspect-ratio: 3.6 / 1;
+  transform-origin: center;
+  opacity: 0;
+  animation: arcane-vortex-rise var(--ribbon-speed) linear var(--ribbon-delay) infinite;
+  will-change: transform, opacity;
+}
+
+.arcane-ribbon::before,
+.arcane-ribbon::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: clamp(1px, .13vw, 3px) solid rgba(110, 69, 255, 0.8);
+  border-radius: 50%;
+  box-shadow: 0 0 12px rgba(103, 62, 255, 0.75), 0 0 24px rgba(69, 219, 255, 0.2);
+}
+
+.arcane-ribbon::before {
+  clip-path: inset(0 0 48% 0);
+  opacity: .28;
+  filter: blur(.25px);
+}
+
+.arcane-ribbon::after {
+  clip-path: inset(48% 0 0 0);
+  border-color: rgba(176, 128, 255, 0.95);
+  box-shadow: 0 0 14px rgba(132, 78, 255, 0.9), 0 0 28px rgba(69, 219, 255, 0.34);
+}
+
+@keyframes arcane-vortex-rise {
+  0% { transform: translate(-50%, 85%) rotateX(66deg) rotateZ(-12deg) scale(.62); opacity: 0; }
+  10% { opacity: .24; }
+  38% { opacity: .58; }
+  58% { transform: translate(-50%, -15%) rotateX(66deg) rotateZ(8deg) scale(1); opacity: .86; }
+  82% { opacity: .42; }
+  100% { transform: translate(-50%, -190%) rotateX(66deg) rotateZ(24deg) scale(1.22); opacity: 0; }
 }
 
 a { color: inherit; }

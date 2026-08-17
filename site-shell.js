@@ -2,6 +2,18 @@
   const mount = document.querySelector("[data-site-shell]");
   if (!mount) return;
 
+  const vortex = document.createElement("div");
+  vortex.className = "arcane-vortex";
+  vortex.setAttribute("aria-hidden", "true");
+  for (let index = 0; index < 4; index += 1) {
+    const ribbon = document.createElement("span");
+    ribbon.className = "arcane-ribbon";
+    ribbon.style.setProperty("--ribbon-delay", `${index * -1.9}s`);
+    ribbon.style.setProperty("--ribbon-speed", `${8.8 + index * 0.35}s`);
+    vortex.append(ribbon);
+  }
+  document.body.prepend(vortex);
+
   const current = mount.dataset.current || "";
   const notes = {
     home: "Experienced players. Shared adventures. One united community.",
