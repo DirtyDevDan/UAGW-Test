@@ -1072,3 +1072,94 @@ input:focus, select:focus, textarea:focus { border-color: var(--gold-bright); ou
   .arcane-storm { display: none; }
   body::after { animation: none; opacity: .35; }
 }
+
+/* Left-rail homepage with cinematic landscape framing */
+body.home-surface { background: #000; }
+body.home-surface::before {
+  inset: clamp(8px, 1vw, 16px);
+  background-color: #000;
+  background-image:
+    linear-gradient(90deg, rgba(0, 1, 7, .92) 0%, rgba(3, 5, 15, .68) 37%, rgba(4, 5, 16, .18) 62%, transparent 82%),
+    linear-gradient(0deg, rgba(0, 0, 0, .52), transparent 46%),
+    url("images/arcane-mage-tower-landscape-v3.png");
+  background-position: center, center, right center;
+  background-size: cover, cover, contain;
+  background-repeat: no-repeat;
+  background-clip: padding-box;
+  border: clamp(9px, 1vw, 15px) solid #000;
+  outline: 1px solid rgba(159, 128, 255, .28);
+  box-shadow: 0 0 0 10px #000, inset 0 0 70px rgba(0, 0, 0, .46);
+}
+body.home-surface::after {
+  background:
+    radial-gradient(ellipse at 80% 29%, rgba(229, 236, 255, .3) 0, rgba(151, 118, 255, .16) 5%, rgba(83, 86, 255, .07) 13%, transparent 26%),
+    radial-gradient(ellipse at 82% 66%, rgba(97, 80, 224, .07), transparent 28%);
+}
+
+@media (min-width: 1151px) and (min-height: 720px) {
+  .home-page .hero-home {
+    grid-template-columns: minmax(480px, min(58%, 650px)) minmax(0, 1fr);
+    grid-template-rows: minmax(276px, .95fr) minmax(118px, .38fr) minmax(170px, .67fr);
+    grid-template-areas:
+      "intro tower"
+      "pillars tower"
+      "feeds tower";
+    column-gap: clamp(18px, 2vw, 32px);
+    row-gap: 10px;
+  }
+  .home-intro {
+    padding: clamp(18px, 2vw, 28px);
+    border-radius: 9px;
+    background: linear-gradient(145deg, rgba(5, 8, 20, .88), rgba(10, 9, 25, .76));
+  }
+  .home-intro .eyebrow { margin-bottom: 7px; font-size: 8px; }
+  .home-intro .page-title { margin-bottom: 9px; font-size: clamp(40px, 3.4vw, 54px); line-height: .94; }
+  .home-intro .lede { max-width: 570px; font-size: clamp(12px, 1vw, 14px); line-height: 1.45; }
+  .home-intro .hero-actions { margin-top: 14px; gap: 8px; }
+  .home-intro .button { min-height: 36px; padding-inline: 14px; font-size: 11px; }
+  .home-intro .guild-facts {
+    margin-top: 14px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-radius: 6px;
+  }
+  .home-intro .guild-facts div { min-width: 0; padding: 8px 9px; }
+  .home-intro .guild-facts div:nth-child(3),
+  .home-intro .guild-facts div:nth-child(4) { border-top: 0; }
+  .home-intro .guild-facts div:nth-child(3) { border-left: 1px solid rgba(255,255,255,.08); }
+  .home-intro .guild-facts dt { font-size: 7px; }
+  .home-intro .guild-facts dd { margin-top: 3px; overflow: hidden; font-size: 9px; line-height: 1.3; }
+  .home-pillars { gap: 7px; }
+  .home-pillars .feature { padding: 10px 11px; border-radius: 6px; }
+  .home-pillars .feature strong { margin-bottom: 3px; font-size: clamp(13px, 1vw, 16px); }
+  .home-pillars .feature p { font-size: 9px; line-height: 1.3; -webkit-line-clamp: 2; }
+  .home-pillars .feature-label { margin-bottom: 3px; font-size: 6px; }
+  .home-pillars .feature a { margin-top: 4px; font-size: 8px; }
+  .home-feed-grid { gap: 8px; }
+  .home-feed-grid .section-heading { margin-bottom: 6px; }
+  .home-feed-grid .section-heading .eyebrow { margin-bottom: 2px; font-size: 6px; }
+  .home-feed-grid .section-heading h2 { font-size: clamp(16px, 1.35vw, 21px); }
+  .home-feed-grid .home-event-list,
+  .home-feed-grid .announcement-grid { gap: 5px; }
+  .home-feed-grid .home-event-card,
+  .home-feed-grid .announcement-card { padding: 7px 9px; border-radius: 5px; }
+  .home-feed-grid .home-event-card { gap: 2px; }
+  .home-feed-grid .home-event-card time { font-size: 6px; }
+  .home-feed-grid .home-event-card strong { font-size: clamp(11px, .9vw, 14px); }
+  .home-feed-grid .home-event-card span { font-size: 7px; }
+  .home-feed-grid .announcement-card span { font-size: 6px; }
+  .home-feed-grid .announcement-card h3 { margin: 3px 0 2px; font-size: clamp(11px, .9vw, 14px); }
+  .home-feed-grid .announcement-card p { font-size: 7px; line-height: 1.25; -webkit-line-clamp: 1; }
+}
+
+@media (max-width: 800px) {
+  body.home-surface::before {
+    inset: 6px;
+    background-position: center, center, right 76px;
+    background-size: cover, cover, contain;
+    border-width: 7px;
+    box-shadow: 0 0 0 6px #000, inset 0 0 40px rgba(0,0,0,.45);
+  }
+  body.home-surface::after {
+    background: radial-gradient(ellipse at 79% 18%, rgba(170, 151, 255, .16), transparent 25%);
+  }
+}
