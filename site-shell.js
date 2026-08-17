@@ -3,6 +3,19 @@
   if (!mount) return;
 
   const current = mount.dataset.current || "";
+  const config = window.UNITED_AZEROTH_SUPABASE;
+  const hasCachedSession = () => {
+    if (!config?.url) return false;
+    try {
+      const projectRef = new URL(config.url).hostname.split(".")[0];
+      const stored = window.localStorage.getItem(`sb-${projectRef}-auth-token`);
+      if (!stored) return false;
+      const session = JSON.parse(stored);
+      return Boolean(session?.access_token && (!session.expires_at || session.expires_at * 1000 > Date.now()));
+    } catch (_error) {
+      return false;
+    }
+  };
   const notes = {
     home: "Experienced players. Shared adventures. One united community.",
     dashboard: "Your private guild account and characters.",
@@ -69,14 +82,15 @@
   nav.className = "nav";
   nav.setAttribute("aria-label", "Primary");
   const accountGroup = group("Account", [
-    ["dashboard.html", "Member sign in", "dashboard"]
+    ["dashboard.html", hasCachedSession() ? "My Dashboard" : "Member sign in", "dashboard"]
   ], "nav-account");
   const accountLink = accountGroup.querySelector("a");
 
   nav.append(
     group("Explore", [
       ["index.html", "Home", "home"],
-      ["schedule.html", "Events", "events"],
+      ["schedule.html", "Events Calendar", "events"],
+      ["roster.html", "Officers", "officers"],
       ["rules.html", "Guild Rules", "rules"],
       ["recruitment.html", "Recruitment", "recruitment"]
     ]),
@@ -86,8 +100,7 @@
   const memberGroup = group("Guild member", [
     ["members.html", "Members", "members"],
     ["availability.html", "Availability", "availability"],
-    ["keys.html", "Mythic+ Keys", "keys"],
-    ["roster.html", "Officers", "officers"]
+    ["keys.html", "Mythic+ Keys", "keys"]
   ], "nav-member");
   memberGroup.hidden = true;
   nav.append(memberGroup);
@@ -103,10 +116,14 @@
   note.textContent = notes[current] || notes.home;
   if (current === "home") note.id = "home-sidebar-message";
 
-  sidebar.append(brand, nav, note);
-  mount.replaceWith(skip, toggle, sidebar);
+  const storm = document.createElement("div");
+  storm.className = "arcane-storm";
+  storm.setAttribute("aria-hidden", "true");
+  storm.append(...Array.from({ length: 3 }, () => document.createElement("span")));
 
-  const config = window.UNITED_AZEROTH_SUPABASE;
+  sidebar.append(brand, nav, note);
+  mount.replaceWith(skip, storm, toggle, sidebar);
+
   if (!config?.url || !config?.publishableKey || !window.supabase?.createClient) return;
 
   const db = window.uaSupabaseClient || window.supabase.createClient(config.url, config.publishableKey, {
@@ -119,7 +136,11 @@
     const { data: { user } } = await db.auth.getUser();
     memberGroup.hidden = true;
     officerGroup.hidden = true;
-    if (!user) return;
+    if (!user) {
+      accountLink.textContent = "Member sign in";
+      return;
+    }
+    accountLink.textContent = "My Dashboard";
 
     const { data: membership } = await db
       .from("guild_memberships")
@@ -128,7 +149,6 @@
       .maybeSingle();
 
     if (membership?.status !== "active") return;
-    accountLink.textContent = "My Dashboard";
     memberGroup.hidden = false;
     officerGroup.hidden = !officerRanks.has(membership.guild_rank);
   };
