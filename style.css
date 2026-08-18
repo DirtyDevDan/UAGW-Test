@@ -633,6 +633,13 @@ dialog .button { cursor: pointer; }
 .private-character-card > span:not(.character-initial):not(.member-rank), .private-character-card small { color: var(--muted); font-size: 11px; }
 .character-editor, .profile-editor { padding: 24px; }
 .profile-editor { max-width: 760px; }
+.form-row.character-details-row { grid-template-columns: minmax(130px,.55fr) minmax(300px,1.45fr); align-items: start; }
+.profession-fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
+.profession-fieldset legend { margin-bottom: 7px; color: var(--muted); font-size: 11px; font-weight: 700; }
+.profession-selects { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+.profession-selects label { margin-bottom: 0; color: #918b80; font-size: 9px; letter-spacing: .08em; text-transform: uppercase; }
+.profession-fieldset small { display: block; margin-top: 7px; color: #918b80; font-size: 10px; }
+.character-editor select:disabled { cursor: not-allowed; opacity: .5; }
 
 @media (max-width: 950px) {
   .account-auth { grid-template-columns: 1fr; padding-block: 40px; }
@@ -1857,6 +1864,7 @@ body.officers-surface::after {
 
 @media (max-width: 700px) {
   .home-command-card { border-left-color: rgba(211, 194, 255, .34); }
+  .form-row.character-details-row, .profession-selects { grid-template-columns: 1fr; }
   .home-command-scroll { width: calc(100% - 16px); padding: 24px 20px; }
   .home-command-card .home-feed-grid { grid-template-columns: 1fr; }
   .home-command-card .home-feed-grid > section:first-child { padding-right: 0; padding-bottom: 22px; }

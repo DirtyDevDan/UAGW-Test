@@ -8,6 +8,22 @@
   let profile = null;
   let membership = null;
   let characters = [];
+  const classSpecializations = {
+    "Death Knight": ["Blood", "Frost", "Unholy"],
+    "Demon Hunter": ["Devourer", "Havoc", "Vengeance"],
+    Druid: ["Balance", "Feral", "Guardian", "Restoration"],
+    Evoker: ["Augmentation", "Devastation", "Preservation"],
+    Hunter: ["Beast Mastery", "Marksmanship", "Survival"],
+    Mage: ["Arcane", "Fire", "Frost"],
+    Monk: ["Brewmaster", "Mistweaver", "Windwalker"],
+    Paladin: ["Holy", "Protection", "Retribution"],
+    Priest: ["Discipline", "Holy", "Shadow"],
+    Rogue: ["Assassination", "Outlaw", "Subtlety"],
+    Shaman: ["Elemental", "Enhancement", "Restoration"],
+    Warlock: ["Affliction", "Demonology", "Destruction"],
+    Warrior: ["Arms", "Fury", "Protection"]
+  };
+  const primaryProfessions = ["Alchemy", "Blacksmithing", "Enchanting", "Engineering", "Herbalism", "Inscription", "Jewelcrafting", "Leatherworking", "Mining", "Skinning", "Tailoring"];
 
   const show = (element) => {
     [loading, setup, dashboard].forEach((view) => { view.hidden = view !== element; });
@@ -16,6 +32,31 @@
     const element = document.getElementById(id); element.textContent = message; element.classList.toggle("error", error);
   };
   const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[character]));
+
+  function fillSelect(select, values, placeholder, selectedValue = "") {
+    select.replaceChildren(new Option(placeholder, ""), ...values.map((value) => new Option(value, value)));
+    if (selectedValue && !values.includes(selectedValue)) select.append(new Option(`${selectedValue} (saved)`, selectedValue));
+    select.value = selectedValue;
+  }
+
+  function populateSpecializations(selectedValue = "") {
+    const select = document.getElementById("character-spec");
+    const className = document.getElementById("character-class").value;
+    const specializations = classSpecializations[className] || [];
+    fillSelect(select, specializations, className ? "Choose a specialization" : "Choose a class first", selectedValue);
+    select.disabled = !className;
+  }
+
+  function syncProfessionOptions() {
+    const first = document.getElementById("character-profession-one");
+    const second = document.getElementById("character-profession-two");
+    Array.from(first.options).forEach((option) => { option.disabled = Boolean(option.value && option.value === second.value); });
+    Array.from(second.options).forEach((option) => { option.disabled = Boolean(option.value && option.value === first.value); });
+  }
+
+  fillSelect(document.getElementById("character-class"), Object.keys(classSpecializations), "Choose a class");
+  fillSelect(document.getElementById("character-profession-one"), primaryProfessions, "None");
+  fillSelect(document.getElementById("character-profession-two"), primaryProfessions, "None");
 
   if (!config.url || !config.publishableKey) {
     show(setup);
@@ -90,11 +131,17 @@
     document.getElementById("character-id").value = character?.id || "";
     document.getElementById("character-name").value = character?.name || "";
     document.getElementById("character-realm").value = character?.realm || "";
-    document.getElementById("character-class").value = character?.class_name || "";
-    document.getElementById("character-spec").value = character?.specialization || "";
+    const savedClass = character?.class_name || "";
+    const classSelect = document.getElementById("character-class");
+    if (savedClass && !Array.from(classSelect.options).some((option) => option.value === savedClass)) classSelect.append(new Option(`${savedClass} (saved)`, savedClass));
+    classSelect.value = savedClass;
+    populateSpecializations(character?.specialization || "");
     document.getElementById("character-role").value = character?.primary_role || "DPS";
     document.getElementById("character-ilvl").value = character?.item_level || "";
-    document.getElementById("character-professions").value = (character?.professions || []).join(", ");
+    const professions = character?.professions || [];
+    fillSelect(document.getElementById("character-profession-one"), primaryProfessions, "None", professions[0] || "");
+    fillSelect(document.getElementById("character-profession-two"), primaryProfessions, "None", professions[1] || "");
+    syncProfessionOptions();
     document.getElementById("character-main").checked = Boolean(character?.is_main);
     document.getElementById("character-note").value = character?.profile_note || "";
     document.getElementById("delete-character").hidden = !character;
@@ -117,11 +164,16 @@
     profile = data; renderPrivateDashboard(); setMessage("profile-message", "Profile saved.");
   });
   document.getElementById("add-character").addEventListener("click", () => openCharacterEditor());
+  document.getElementById("character-class").addEventListener("change", () => populateSpecializations());
+  document.getElementById("character-profession-one").addEventListener("change", syncProfessionOptions);
+  document.getElementById("character-profession-two").addEventListener("change", syncProfessionOptions);
   document.getElementById("close-character-form").addEventListener("click", () => { document.getElementById("character-form").hidden = true; });
   document.getElementById("character-form").addEventListener("submit", async (event) => {
     event.preventDefault(); setMessage("character-message", "Saving…");
     const id = document.getElementById("character-id").value;
-    const record = { user_id: currentUser.id, name: document.getElementById("character-name").value.trim(), realm: document.getElementById("character-realm").value.trim(), class_name: document.getElementById("character-class").value.trim(), specialization: document.getElementById("character-spec").value.trim(), primary_role: document.getElementById("character-role").value, item_level: Number(document.getElementById("character-ilvl").value) || null, professions: document.getElementById("character-professions").value.split(",").map((item) => item.trim()).filter(Boolean), is_main: document.getElementById("character-main").checked, profile_note: document.getElementById("character-note").value.trim(), updated_at: new Date().toISOString() };
+    const professions = [document.getElementById("character-profession-one").value, document.getElementById("character-profession-two").value].filter(Boolean);
+    if (new Set(professions).size !== professions.length) { setMessage("character-message", "Choose two different professions.", true); return; }
+    const record = { user_id: currentUser.id, name: document.getElementById("character-name").value.trim(), realm: document.getElementById("character-realm").value.trim(), class_name: document.getElementById("character-class").value, specialization: document.getElementById("character-spec").value, primary_role: document.getElementById("character-role").value, item_level: Number(document.getElementById("character-ilvl").value) || null, professions, is_main: document.getElementById("character-main").checked, profile_note: document.getElementById("character-note").value.trim(), updated_at: new Date().toISOString() };
     if (record.is_main) await client.from("characters").update({ is_main: false }).eq("user_id", currentUser.id);
     const query = id ? client.from("characters").update(record).eq("id", id) : client.from("characters").insert(record);
     const { error } = await query;
