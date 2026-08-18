@@ -57,7 +57,7 @@
     const directory = document.getElementById("member-directory");
     if (!directory) return;
     const { data: { user } } = await db.auth.getUser();
-    if (!user) { directory.innerHTML = `<div class="empty-state"><strong>Guild members only</strong><p>Sign in to view approved member profiles and characters.</p><a class="button" href="dashboard.html">Sign in</a></div>`; return; }
+    if (!user) { directory.innerHTML = `<div class="empty-state"><strong>Guild members only</strong><p>Sign in to view approved member profiles and characters.</p><a class="button" href="index.html?login=1">Sign in</a></div>`; return; }
     const [{ data: profiles, error: profileError }, { data: memberships }, { data: characters }] = await Promise.all([
       db.from("profiles").select("user_id,display_name,discord_name,bio,visibility").eq("visibility", "guild"),
       db.from("guild_memberships").select("user_id,guild_rank,status").eq("status", "active"),

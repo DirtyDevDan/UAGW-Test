@@ -20,7 +20,7 @@
   $("ops-rank").textContent = membership.guild_rank; $("ops-email").textContent = user.email;
   $("ops-permission-summary").textContent = leader ? "Full guild leadership, membership, content, and event operations." : "Calendar, team rules, roster, and attendance operations.";
   document.querySelectorAll("[data-leader-only]").forEach((node) => { node.hidden = !leader; });
-  $("ops-signout").addEventListener("click", async () => { await db.auth.signOut(); location.href = "dashboard.html"; });
+  $("ops-signout").addEventListener("click", async () => { await db.auth.signOut(); location.href = "index.html"; });
 
   let events = [], signups = [], announcements = [], applications = [], members = [], auditRows = [];
   async function audit(action, target, detail = "") {
