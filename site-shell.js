@@ -4,16 +4,29 @@
 
   const current = mount.dataset.current || "";
   const config = window.UNITED_AZEROTH_SUPABASE;
-  const hasCachedSession = () => {
+  const readCachedSession = () => {
     if (!config?.url) return false;
     try {
       const projectRef = new URL(config.url).hostname.split(".")[0];
       const stored = window.localStorage.getItem(`sb-${projectRef}-auth-token`);
-      if (!stored) return false;
-      const session = JSON.parse(stored);
-      return Boolean(session?.access_token && (!session.expires_at || session.expires_at * 1000 > Date.now()));
+      if (!stored) return null;
+      const parsed = JSON.parse(stored);
+      const session = parsed?.currentSession || parsed?.session || parsed;
+      return session?.access_token && (!session.expires_at || session.expires_at * 1000 > Date.now()) ? session : null;
     } catch (_error) {
-      return false;
+      return null;
+    }
+  };
+  const cachedSession = readCachedSession();
+  let activeUserId = cachedSession?.user?.id || null;
+  const membershipKey = (userId) => `ua-membership-${userId}`;
+  const readCachedMembership = (userId) => {
+    if (!userId) return null;
+    try {
+      const cached = JSON.parse(window.localStorage.getItem(membershipKey(userId)) || "null");
+      return cached?.user_id === userId ? cached : null;
+    } catch (_error) {
+      return null;
     }
   };
   const notes = {
@@ -81,11 +94,6 @@
   const nav = document.createElement("nav");
   nav.className = "nav";
   nav.setAttribute("aria-label", "Primary");
-  const accountGroup = group("Account", [
-    ["dashboard.html", hasCachedSession() ? "My Dashboard" : "Member sign in", "dashboard"]
-  ], "nav-account");
-  const accountLink = accountGroup.querySelector("a");
-
   nav.append(
     group("Explore", [
       ["index.html", "Home", "home"],
@@ -93,8 +101,7 @@
       ["roster.html", "Officers", "officers"],
       ["rules.html", "Guild Rules", "rules"],
       ["recruitment.html", "Recruitment", "recruitment"]
-    ]),
-    accountGroup
+    ])
   );
 
   const memberGroup = group("Guild member", [
@@ -111,6 +118,20 @@
   officerGroup.hidden = true;
   nav.append(officerGroup);
 
+  const accountCorner = document.createElement("div");
+  accountCorner.className = "account-corner";
+  accountCorner.hidden = true;
+  const accountCornerCopy = document.createElement("span");
+  accountCornerCopy.textContent = "Member account";
+  const dashboardLink = link("dashboard.html", "My Dashboard", "dashboard");
+  accountCorner.append(accountCornerCopy, dashboardLink);
+
+  const loginLinks = document.createElement("div");
+  loginLinks.className = "sidebar-login-links";
+  const memberLogin = link("index.html?login=1", "Member login", "");
+  const officerLogin = link("index.html?login=1&access=officer", "Officer login", "");
+  loginLinks.append(memberLogin, officerLogin);
+
   const note = document.createElement("p");
   note.className = "sidebar-note";
   note.textContent = notes[current] || notes.home;
@@ -121,8 +142,27 @@
   storm.setAttribute("aria-hidden", "true");
   storm.append(...Array.from({ length: 3 }, () => document.createElement("span")));
 
-  sidebar.append(brand, nav, note);
-  mount.replaceWith(skip, storm, toggle, sidebar);
+  sidebar.append(brand, nav, note, loginLinks);
+  mount.replaceWith(skip, storm, toggle, sidebar, accountCorner);
+
+  const officerRanks = new Set(["Guild Master", "Co-Guild Master", "Raid Officer", "Event Officer"]);
+  const applyAuthUI = (session, membership = null) => {
+    const signedIn = Boolean(session?.user);
+    activeUserId = session?.user?.id || null;
+    accountCorner.hidden = !signedIn;
+    loginLinks.hidden = signedIn;
+    memberGroup.hidden = !signedIn || membership?.status !== "active";
+    officerGroup.hidden = !signedIn || membership?.status !== "active" || !officerRanks.has(membership.guild_rank);
+    document.body.classList.toggle("ua-authenticated", signedIn);
+    document.body.classList.toggle("ua-auth-resolved", true);
+    if (signedIn) {
+      accountCornerCopy.textContent = membership?.guild_rank || "Member account";
+      accountCorner.title = session.user.email || "Signed-in member account";
+    }
+    window.dispatchEvent(new CustomEvent("ua-auth-ui", { detail: { signedIn, session, membership } }));
+  };
+
+  applyAuthUI(cachedSession, readCachedMembership(cachedSession?.user?.id));
 
   if (!config?.url || !config?.publishableKey || !window.supabase?.createClient) return;
 
@@ -130,31 +170,30 @@
     auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
   });
   window.uaSupabaseClient = db;
-  const officerRanks = new Set(["Guild Master", "Co-Guild Master", "Raid Officer", "Event Officer"]);
-
   const updateNavigation = async () => {
     const { data: { user } } = await db.auth.getUser();
-    memberGroup.hidden = true;
-    officerGroup.hidden = true;
     if (!user) {
-      accountLink.textContent = "Member sign in";
+      if (activeUserId) window.localStorage.removeItem(membershipKey(activeUserId));
+      applyAuthUI(null, null);
       return;
     }
-    accountLink.textContent = "My Dashboard";
 
-    const { data: membership } = await db
+    const { data: membership, error: membershipError } = await db
       .from("guild_memberships")
       .select("guild_rank,status")
       .eq("user_id", user.id)
       .maybeSingle();
-
-    if (membership?.status !== "active") return;
-    memberGroup.hidden = false;
-    officerGroup.hidden = !officerRanks.has(membership.guild_rank);
+    const safeMembership = membershipError ? null : membership;
+    if (safeMembership) window.localStorage.setItem(membershipKey(user.id), JSON.stringify({ ...safeMembership, user_id: user.id }));
+    const { data: { session } } = await db.auth.getSession();
+    applyAuthUI(session, safeMembership);
   };
 
+  window.uaAuthNavigation = { refresh: updateNavigation };
   updateNavigation().catch(() => {});
-  db.auth.onAuthStateChange(() => {
+  db.auth.onAuthStateChange((_event, session) => {
+    if (!session && activeUserId) window.localStorage.removeItem(membershipKey(activeUserId));
+    applyAuthUI(session, readCachedMembership(session?.user?.id));
     window.setTimeout(() => updateNavigation().catch(() => {}), 0);
   });
 })();

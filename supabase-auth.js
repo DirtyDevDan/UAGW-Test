@@ -1,7 +1,6 @@
 (function () {
   const loading = document.getElementById("account-loading");
   const setup = document.getElementById("account-setup");
-  const authView = document.getElementById("account-auth");
   const dashboard = document.getElementById("private-dashboard");
   const config = window.UNITED_AZEROTH_SUPABASE || {};
   let client = null;
@@ -11,7 +10,7 @@
   let characters = [];
 
   const show = (element) => {
-    [loading, setup, authView, dashboard].forEach((view) => { view.hidden = view !== element; });
+    [loading, setup, dashboard].forEach((view) => { view.hidden = view !== element; });
   };
   const setMessage = (id, message, error = false) => {
     const element = document.getElementById(id); element.textContent = message; element.classList.toggle("error", error);
@@ -28,13 +27,17 @@
     return;
   }
 
-  client = window.supabase.createClient(config.url, config.publishableKey, {
+  client = window.uaSupabaseClient || window.supabase.createClient(config.url, config.publishableKey, {
     auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
   });
+  window.uaSupabaseClient = client;
 
   async function loadAccount() {
     const { data: userData, error: userError } = await client.auth.getUser();
-    if (userError || !userData.user) { show(authView); return; }
+    if (userError || !userData.user) {
+      window.location.replace("index.html?login=1");
+      return;
+    }
     currentUser = userData.user;
     const [{ data: profileData, error: profileError }, { data: membershipData, error: membershipError }, { data: characterData, error: characterError }] = await Promise.all([
       client.from("profiles").select("*").eq("user_id", currentUser.id).single(),
@@ -98,37 +101,13 @@
     document.getElementById("character-name").focus();
   }
 
-  document.querySelectorAll(".auth-tabs [role='tab']").forEach((tab) => tab.addEventListener("click", () => {
-    document.querySelectorAll(".auth-tabs [role='tab']").forEach((item) => item.setAttribute("aria-selected", String(item === tab)));
-    document.getElementById("signin-form").hidden = tab.getAttribute("aria-controls") !== "signin-form";
-    document.getElementById("signup-form").hidden = tab.getAttribute("aria-controls") !== "signup-form";
-  }));
   document.querySelectorAll(".account-tabs [role='tab']").forEach((tab) => tab.addEventListener("click", () => switchPanel(tab.getAttribute("aria-controls"))));
   document.querySelectorAll("[data-open-panel]").forEach((button) => button.addEventListener("click", () => switchPanel(button.dataset.openPanel)));
-
-  document.getElementById("signin-form").addEventListener("submit", async (event) => {
-    event.preventDefault(); setMessage("signin-message", "Signing in…");
-    const { error } = await client.auth.signInWithPassword({ email: document.getElementById("signin-email").value.trim(), password: document.getElementById("signin-password").value });
-    if (error) { setMessage("signin-message", error.message, true); return; }
-    await loadAccount();
+  document.getElementById("account-signout").addEventListener("click", async () => {
+    await client.auth.signOut();
+    currentUser = null;
+    window.location.replace("index.html");
   });
-  document.getElementById("signup-form").addEventListener("submit", async (event) => {
-    event.preventDefault();
-    const password = document.getElementById("signup-password").value;
-    if (password !== document.getElementById("signup-confirm").value) { setMessage("signup-message", "Passwords do not match.", true); return; }
-    setMessage("signup-message", "Creating your account…");
-    const { data, error } = await client.auth.signUp({ email: document.getElementById("signup-email").value.trim(), password, options: { data: { display_name: document.getElementById("signup-display-name").value.trim() } } });
-    if (error) { setMessage("signup-message", error.message, true); return; }
-    if (!data.session) { setMessage("signup-message", "Check your email to confirm your account, then sign in."); return; }
-    await loadAccount();
-  });
-  document.getElementById("reset-password").addEventListener("click", async () => {
-    const email = document.getElementById("signin-email").value.trim();
-    if (!email) { setMessage("signin-message", "Enter your email address first.", true); return; }
-    const { error } = await client.auth.resetPasswordForEmail(email, { redirectTo: window.location.href });
-    setMessage("signin-message", error ? error.message : "Password reset email sent.", Boolean(error));
-  });
-  document.getElementById("account-signout").addEventListener("click", async () => { await client.auth.signOut(); currentUser = null; show(authView); });
 
   document.getElementById("profile-form").addEventListener("submit", async (event) => {
     event.preventDefault(); setMessage("profile-message", "Saving…");
@@ -161,7 +140,10 @@
   });
 
   client.auth.onAuthStateChange((_event, session) => {
-    if (!session && currentUser) { currentUser = null; show(authView); }
+    if (!session && currentUser) {
+      currentUser = null;
+      window.location.replace("index.html");
+    }
   });
   loadAccount();
 })();
