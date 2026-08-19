@@ -1520,6 +1520,7 @@ body.officers-surface::after {
 
 .officer-bio[hidden] { display: none; }
 .officer-bio {
+  display: block;
   position: absolute;
   top: 17%;
   left: 50%;
@@ -1536,10 +1537,34 @@ body.officers-surface::after {
   box-shadow: 0 30px 70px rgba(0, 0, 0, .52), inset 0 0 38px rgba(109, 77, 213, .12);
   text-align: left;
   cursor: pointer;
-  mask-image: linear-gradient(transparent, #000 9%, #000 86%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 15%, #000 82%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 15%, #000 82%, transparent 100%);
+}
+
+.officer-bio::before,
+.officer-bio::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  left: 0;
+  z-index: 2;
+  height: 72px;
+  pointer-events: none;
+}
+
+.officer-bio::before {
+  top: 0;
+  background: linear-gradient(to bottom, rgba(4, 7, 17, .99), rgba(4, 7, 17, .72) 42%, transparent);
+}
+
+.officer-bio::after {
+  bottom: 0;
+  background: linear-gradient(to top, rgba(3, 5, 13, .99), rgba(3, 5, 13, .72) 42%, transparent);
 }
 
 .officer-bio-track {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   gap: 46px;
