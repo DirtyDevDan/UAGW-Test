@@ -595,6 +595,21 @@ dialog .button { cursor: pointer; }
 /* Supabase member accounts */
 .account-loading { min-height: 65vh; display: grid; place-items: center; align-content: center; gap: 16px; color: var(--muted); }
 .account-loading .admin-crest { margin: 0; }
+.application-status-view { min-height: calc(100vh - 100px); display: grid; place-items: center; }
+.application-status-view[hidden] { display: none; }
+.application-status-card { width: min(760px,100%); padding: clamp(28px,5vw,52px); border-top: 3px solid var(--gold); box-shadow: 0 30px 90px rgba(0,0,0,.52), inset 0 0 52px rgba(126,92,226,.08); }
+.application-status-card h1 { max-width: 650px; margin: 10px 0 14px; font-family: Georgia,serif; font-size: clamp(34px,5vw,54px); line-height: 1.04; }
+.application-status-badge { float: right; padding: 7px 10px; color: var(--gold-bright); background: rgba(216,179,93,.08); border: 1px solid var(--gold); border-radius: 999px; font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.application-status-facts { margin: 30px 0; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); border: 1px solid var(--line); }
+.application-status-facts div { padding: 14px 16px; display: grid; gap: 5px; }
+.application-status-facts div:nth-child(even) { border-left: 1px solid var(--line); }
+.application-status-facts div:nth-child(n+3) { border-top: 1px solid var(--line); }
+.application-status-facts dt { color: var(--muted); font-size: 8px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.application-status-facts dd { margin: 0; color: var(--ink); font-size: 13px; font-weight: 700; }
+.application-status-lock { margin-bottom: 24px; padding: 18px; display: grid; gap: 6px; background: rgba(159,128,255,.07); border-left: 2px solid var(--arcane); }
+.application-status-lock strong { color: var(--arcane-bright); }
+.application-status-lock span { color: var(--muted); font-size: 12px; line-height: 1.55; }
+.ua-member-gated:not(.ua-member-approved) main { visibility: hidden; }
 .account-setup { max-width: 740px; margin: 8vh auto; padding: 34px; border-top: 3px solid var(--gold); }
 .account-setup h1 { font-family: Georgia,serif; font-size: 40px; }
 .account-setup p, .account-setup li { color: var(--muted); line-height: 1.7; }
@@ -1233,7 +1248,7 @@ body.home-surface::after {
   transition: width .36s ease, height .36s ease;
 }
 .home-login-card.is-flipped { width: 360px; height: 438px; }
-.home-login-card.is-flipped.showing-signup { height: min(600px, calc(100vh - 68px)); }
+.home-login-card.is-flipped.showing-signup { width: min(720px, calc(100vw - 76px)); height: min(820px, calc(100vh - 68px)); }
 .home-login-card-inner {
   position: relative;
   width: 100%;
@@ -1293,6 +1308,10 @@ body.home-surface::after {
 .home-login-back .auth-form { padding: 22px; }
 .home-login-back .auth-form h2 { margin-bottom: 17px; font-size: 27px; }
 .home-login-back .auth-form label { margin-bottom: 11px; }
+.home-login-back .signup-application-form { padding: 24px 26px 28px; }
+.signup-intro { margin: -8px 0 18px; color: var(--muted); font-size: 12px; line-height: 1.55; }
+.signup-section-label { margin: 18px 0 11px; padding-bottom: 7px; color: var(--gold-bright); border-bottom: 1px solid var(--line); font-size: 9px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.signup-application-form textarea { resize: vertical; }
 .home-login-back .form-message { min-height: 18px; margin: 0 0 9px; color: var(--muted); font-size: 11px; line-height: 1.45; }
 .home-login-close {
   position: absolute;
@@ -1324,6 +1343,11 @@ body.home-surface::after {
     height: min(438px, calc(100svh - 94px));
   }
   .home-login-card.is-flipped.showing-signup { height: calc(100svh - 94px); }
+  .home-login-card.is-flipped.showing-signup { width: min(360px, calc(100vw - 32px)); }
+  .signup-application-form .form-row, .signup-application-form .form-row.three { grid-template-columns: 1fr; }
+  .application-status-facts { grid-template-columns: 1fr; }
+  .application-status-facts div:nth-child(even) { border-left: 0; }
+  .application-status-facts div + div { border-top: 1px solid var(--line); }
 }
 
 @media (prefers-reduced-motion: reduce) {
