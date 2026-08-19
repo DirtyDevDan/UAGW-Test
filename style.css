@@ -1571,8 +1571,8 @@ body.officers-surface::after {
 }
 
 @keyframes officer-bio-roll {
-  from { transform: translateY(-50%); }
-  to { transform: translateY(0); }
+  from { transform: translateY(0); }
+  to { transform: translateY(-50%); }
 }
 
 .officer-stage-hint {
