@@ -106,8 +106,7 @@
 
   const memberGroup = group("Guild member", [
     ["members.html", "Members", "members"],
-    ["availability.html", "Availability", "availability"],
-    ["keys.html", "Mythic+ Keys", "keys"]
+    ["availability.html", "Availability", "availability"]
   ], "nav-member");
   memberGroup.hidden = true;
   nav.append(memberGroup);

@@ -1769,6 +1769,12 @@ body.officers-surface::after {
 }
 
 .home-command-card .home-feed-grid .section-heading { margin-bottom: 10px; }
+.home-command-card .home-feed-grid .section-heading .eyebrow {
+  min-height: 1em;
+  font-family: system-ui, sans-serif;
+  line-height: 1;
+  font-synthesis: none;
+}
 .home-command-card .home-feed-grid .home-event-list,
 .home-command-card .home-feed-grid .announcement-grid {
   min-height: 0;
