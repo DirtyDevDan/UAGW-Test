@@ -2,7 +2,7 @@
 
 An Alliance-focused guild website connected to Supabase for member accounts,
 multiple characters, shared events, RSVPs, announcements, member listings, and
-recruitment.
+leader-approved membership applications.
 
 ## Start locally
 
@@ -14,7 +14,7 @@ has no build step and no installed runtime dependencies.
 - `dashboard.html` — private member account and character management.
 - `schedule.html` — interactive shared calendar and character RSVPs.
 - `members.html` — approved-member directory.
-- `recruitment.html` — guild application form.
+- `index.html?login=1&signup=1` — account creation and required guild application.
 - `guild-admin.html` — a unified officer command center for calendar, rules,
   rosters, attendance, member access, recruitment, announcements, website
   content, and audit history.

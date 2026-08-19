@@ -3,6 +3,8 @@
   if (!mount) return;
 
   const current = mount.dataset.current || "";
+  const memberOnlyPages = new Set(["members", "availability", "keys"]);
+  if (memberOnlyPages.has(current)) document.body.classList.add("ua-member-gated");
   const config = window.UNITED_AZEROTH_SUPABASE;
   const readCachedSession = () => {
     if (!config?.url) return false;
@@ -37,7 +39,6 @@
     availability: "Help officers schedule when the team can play.",
     keys: "Find a group, fill a role, and time the next key together.",
     rules: "Clear expectations help every guildmate succeed.",
-    recruitment: "Build friendships, defeat bosses, and find your next guild home.",
     officers: "Leadership is here to guide events, support members, and protect the community.",
     command: "One secure place for leadership and event operations."
   };
@@ -99,8 +100,7 @@
       ["index.html", "Home", "home"],
       ["schedule.html", "Events Calendar", "events"],
       ["roster.html", "Officers", "officers"],
-      ["rules.html", "Guild Rules", "rules"],
-      ["recruitment.html", "Recruitment", "recruitment"]
+      ["rules.html", "Guild Rules", "rules"]
     ])
   );
 
@@ -146,17 +146,20 @@
   mount.replaceWith(skip, storm, toggle, sidebar, accountCorner);
 
   const officerRanks = new Set(["Guild Master", "Co-Guild Master", "Raid Officer", "Event Officer"]);
-  const applyAuthUI = (session, membership = null) => {
+  const applyAuthUI = (session, membership = null, verified = false) => {
     const signedIn = Boolean(session?.user);
+    const approved = membership?.status === "active" && (!memberOnlyPages.has(current) || verified);
     activeUserId = session?.user?.id || null;
     accountCorner.hidden = !signedIn;
     loginLinks.hidden = signedIn;
-    memberGroup.hidden = !signedIn || membership?.status !== "active";
-    officerGroup.hidden = !signedIn || membership?.status !== "active" || !officerRanks.has(membership.guild_rank);
+    memberGroup.hidden = !signedIn || !approved;
+    officerGroup.hidden = !signedIn || !approved || !officerRanks.has(membership.guild_rank);
     document.body.classList.toggle("ua-authenticated", signedIn);
+    document.body.classList.toggle("ua-member-approved", approved);
     document.body.classList.toggle("ua-auth-resolved", true);
     if (signedIn) {
-      accountCornerCopy.textContent = membership?.guild_rank || "Member account";
+      accountCornerCopy.textContent = approved ? membership.guild_rank : "Application under review";
+      dashboardLink.textContent = approved ? "My Dashboard" : "Application Status";
       accountCorner.title = session.user.email || "Signed-in member account";
     }
     window.dispatchEvent(new CustomEvent("ua-auth-ui", { detail: { signedIn, session, membership } }));
@@ -186,7 +189,11 @@
     const safeMembership = membershipError ? null : membership;
     if (safeMembership) window.localStorage.setItem(membershipKey(user.id), JSON.stringify({ ...safeMembership, user_id: user.id }));
     const { data: { session } } = await db.auth.getSession();
-    applyAuthUI(session, safeMembership);
+    if (memberOnlyPages.has(current) && safeMembership?.status !== "active") {
+      window.location.replace(safeMembership ? "dashboard.html" : "index.html?login=1");
+      return;
+    }
+    applyAuthUI(session, safeMembership, true);
   };
 
   window.uaAuthNavigation = { refresh: updateNavigation };

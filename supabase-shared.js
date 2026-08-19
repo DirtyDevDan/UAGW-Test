@@ -90,18 +90,6 @@
     render();
   }
 
-  async function submitRecruitment() {
-    const form = document.getElementById("recruitment-form");
-    if (!form) return;
-    form.addEventListener("submit", async (event) => {
-      event.preventDefault(); const message = document.getElementById("application-message"); message.textContent = "Submitting...";
-      const record = { email: document.getElementById("apply-email").value.trim(), character_name: document.getElementById("apply-name").value.trim(), discord_name: document.getElementById("apply-discord").value.trim(), class_name: document.getElementById("apply-class").value.trim(), primary_role: document.getElementById("apply-role").value, item_level: Number(document.getElementById("apply-ilvl").value) || null, goals: document.getElementById("apply-goals").value.trim(), experience: document.getElementById("apply-experience").value.trim(), status: "New" };
-      const { error } = await db.from("recruitment_applications").insert(record);
-      if (error) { message.textContent = error.message; message.classList.add("error"); return; }
-      form.reset(); message.classList.remove("error"); message.textContent = "Application received. Leadership can now review it from any device.";
-    });
-  }
-
   async function loadCalendar() {
     const grid = document.getElementById("calendar-grid"); if (!grid) return;
     const categories = { raid:["Raid","#f3d384"],mythic:["Mythic+","#67c9ff"],pvp:["PvP","#ff7b7b"],transmog:["Transmog","#c39bff"],meeting:["Meeting","#72db9b"],social:["Social","#ff9dd1"] };
@@ -129,5 +117,5 @@
     render();
   }
 
-  loadAnnouncements(); loadHomepageEvents(); loadSharedSettings(); loadDirectory(); submitRecruitment(); loadCalendar();
+  loadAnnouncements(); loadHomepageEvents(); loadSharedSettings(); loadDirectory(); loadCalendar();
 })();

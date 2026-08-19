@@ -2,6 +2,7 @@
   const loading = document.getElementById("account-loading");
   const setup = document.getElementById("account-setup");
   const dashboard = document.getElementById("private-dashboard");
+  const applicationView = document.getElementById("application-status-view");
   const config = window.UNITED_AZEROTH_SUPABASE || {};
   let client = null;
   let currentUser = null;
@@ -26,7 +27,7 @@
   const primaryProfessions = ["Alchemy", "Blacksmithing", "Enchanting", "Engineering", "Herbalism", "Inscription", "Jewelcrafting", "Leatherworking", "Mining", "Skinning", "Tailoring"];
 
   const show = (element) => {
-    [loading, setup, dashboard].forEach((view) => { view.hidden = view !== element; });
+    [loading, setup, dashboard, applicationView].forEach((view) => { view.hidden = view !== element; });
   };
   const setMessage = (id, message, error = false) => {
     const element = document.getElementById(id); element.textContent = message; element.classList.toggle("error", error);
@@ -80,18 +81,49 @@
       return;
     }
     currentUser = userData.user;
-    const [{ data: profileData, error: profileError }, { data: membershipData, error: membershipError }, { data: characterData, error: characterError }] = await Promise.all([
+    const [{ data: profileData, error: profileError }, { data: membershipData, error: membershipError }, { data: applicationData, error: applicationError }] = await Promise.all([
       client.from("profiles").select("*").eq("user_id", currentUser.id).single(),
       client.from("guild_memberships").select("*").eq("user_id", currentUser.id).single(),
-      client.from("characters").select("*").eq("user_id", currentUser.id).order("is_main", { ascending: false }).order("name")
+      client.from("recruitment_applications").select("*").eq("account_user_id", currentUser.id).order("created_at", { ascending: false }).limit(1).maybeSingle()
     ]);
-    if (profileError || membershipError || characterError) {
+    if (profileError || membershipError || applicationError) {
       show(setup);
       document.getElementById("setup-error").textContent = "Connected to Supabase, but the guild tables are unavailable. Run supabase-schema.sql in the SQL Editor.";
       return;
     }
-    profile = profileData; membership = membershipData; characters = characterData || [];
+    profile = profileData; membership = membershipData;
+    if (membership.status !== "active") {
+      renderApplicationStatus(applicationData);
+      show(applicationView);
+      return;
+    }
+    const { data: characterData, error: characterError } = await client.from("characters").select("*").eq("user_id", currentUser.id).order("is_main", { ascending: false }).order("name");
+    if (characterError) {
+      show(setup);
+      document.getElementById("setup-error").textContent = "Your approved membership loaded, but character records are unavailable.";
+      return;
+    }
+    characters = characterData || [];
     renderPrivateDashboard(); show(dashboard);
+  }
+
+  function renderApplicationStatus(application) {
+    const status = application?.status || "Application required";
+    const messages = {
+      New: ["Your application is waiting for review.", "Leadership has received it. Member access will unlock automatically if it is accepted."],
+      Reviewing: ["Leadership is reviewing your application.", "Your account remains private while the guild leadership team considers your application."],
+      Interview: ["Your application has reached the interview stage.", "Watch Discord or your email for follow-up from guild leadership."],
+      Declined: ["Your application was not accepted.", "Member-only access remains locked. Contact guild leadership if you have questions."],
+      Accepted: ["Your application was accepted.", "Membership access is being activated. Refresh this page in a moment."]
+    };
+    const copy = messages[status] || ["Complete your guild application.", "This account cannot access member pages until an application is submitted and accepted."];
+    document.getElementById("application-status-badge").textContent = status;
+    document.getElementById("application-status-title").textContent = copy[0];
+    document.getElementById("application-status-message").textContent = copy[1];
+    document.getElementById("application-status-email").textContent = currentUser.email;
+    document.getElementById("application-status-character").textContent = application?.character_name || "Not submitted";
+    document.getElementById("application-status-role").textContent = application ? `${application.class_name} · ${application.primary_role}` : "—";
+    document.getElementById("application-status-date").textContent = application?.created_at ? new Date(application.created_at).toLocaleDateString() : "—";
   }
 
   function switchPanel(panelId) {
@@ -150,11 +182,13 @@
 
   document.querySelectorAll(".account-tabs [role='tab']").forEach((tab) => tab.addEventListener("click", () => switchPanel(tab.getAttribute("aria-controls"))));
   document.querySelectorAll("[data-open-panel]").forEach((button) => button.addEventListener("click", () => switchPanel(button.dataset.openPanel)));
-  document.getElementById("account-signout").addEventListener("click", async () => {
+  const signOut = async () => {
     await client.auth.signOut();
     currentUser = null;
     window.location.replace("index.html");
-  });
+  };
+  document.getElementById("account-signout").addEventListener("click", signOut);
+  document.getElementById("application-signout").addEventListener("click", signOut);
 
   document.getElementById("profile-form").addEventListener("submit", async (event) => {
     event.preventDefault(); setMessage("profile-message", "Saving…");

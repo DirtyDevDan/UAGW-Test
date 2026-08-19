@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=character-selects-20260817-1">
+  <link rel="stylesheet" href="style.css?v=membership-approval-20260818-1">
 </head>
 <body class="home-surface">
   <div data-site-shell data-current="home"></div>
@@ -23,7 +23,7 @@
           <button class="home-login-close" id="home-login-close" type="button" aria-label="Close member login">×</button>
           <div class="auth-tabs" role="tablist" aria-label="Account options"><button role="tab" aria-selected="true" aria-controls="home-signin-form">Sign in</button><button role="tab" aria-selected="false" aria-controls="home-signup-form">Create account</button></div>
           <form id="home-signin-form" class="auth-form"><h2>Welcome back</h2><label>Email address<input id="home-signin-email" type="email" autocomplete="email" required></label><label>Password<input id="home-signin-password" type="password" autocomplete="current-password" required></label><p class="form-message" id="home-signin-message" role="alert"></p><button class="button" type="submit">Sign in</button><button class="text-button reset-link" id="home-reset-password" type="button">Forgot your password?</button></form>
-          <form id="home-signup-form" class="auth-form" hidden><h2>Create member account</h2><label>Display name<input id="home-signup-display-name" maxlength="30" autocomplete="nickname" required></label><label>Email address<input id="home-signup-email" type="email" autocomplete="email" required></label><label>Password<input id="home-signup-password" type="password" autocomplete="new-password" minlength="8" required></label><label>Confirm password<input id="home-signup-confirm" type="password" autocomplete="new-password" minlength="8" required></label><p class="form-message" id="home-signup-message" role="alert"></p><button class="button" type="submit">Create account</button></form>
+          <form id="home-signup-form" class="auth-form signup-application-form" hidden><h2>Create account &amp; apply</h2><p class="signup-intro">Every new account includes a guild application. Member access unlocks after leadership accepts it.</p><p class="signup-section-label">Account details</p><div class="form-row"><label>Display name<input id="home-signup-display-name" maxlength="30" autocomplete="nickname" required></label><label>Email address<input id="home-signup-email" type="email" autocomplete="email" required></label></div><div class="form-row"><label>Password<input id="home-signup-password" type="password" autocomplete="new-password" minlength="8" required></label><label>Confirm password<input id="home-signup-confirm" type="password" autocomplete="new-password" minlength="8" required></label></div><p class="signup-section-label">Guild application</p><div class="form-row"><label>Main character<input id="home-apply-name" maxlength="30" required></label><label>Discord username<input id="home-apply-discord" maxlength="40" required></label></div><div class="form-row three"><label>Class<select id="home-apply-class" required><option value="">Choose a class</option></select></label><label>Main role<select id="home-apply-role" required><option>Tank</option><option>Healer</option><option>DPS</option><option>Flexible</option></select></label><label>Item level<input id="home-apply-ilvl" type="number" min="1" max="999" required></label></div><label>What are you looking for in a guild?<textarea id="home-apply-goals" rows="3" maxlength="1000" required></textarea></label><label>Tell us about your experience<textarea id="home-apply-experience" rows="3" maxlength="1000" required></textarea></label><label class="check-label"><input id="home-apply-agree" type="checkbox" required> I have read and agree to follow the guild rules.</label><p class="form-message" id="home-signup-message" role="alert"></p><button class="button" type="submit">Create account &amp; submit application</button></form>
         </div>
       </div>
     </div>
@@ -37,7 +37,7 @@
         <h1 class="page-title" id="home-headline">Welcome to United Azeroth.</h1>
         <p class="lede" id="home-lede">United Azeroth is a welcoming World of Warcraft community for players who want organized progression, reliable groups, and friendships that last beyond the final pull.</p>
         <div class="hero-actions">
-          <a class="button" href="recruitment.html">Apply to join</a>
+          <a class="button" href="index.html?login=1&amp;signup=1">Create account &amp; apply</a>
           <a class="button secondary" href="schedule.html">View events calendar</a>
         </div>
         <dl class="guild-facts" aria-label="Guild at a glance">
@@ -48,7 +48,7 @@
         </dl>
       </section>
       <section class="feature-grid home-pillars" aria-label="Guild highlights">
-        <article class="feature recruitment-card"><span class="feature-label">Recruiting now</span><strong>Healers &amp; dependable DPS</strong><p>We welcome exceptional applicants of every class, with particular interest in players who enjoy organized group content.</p><a href="recruitment.html">View recruitment details →</a></article>
+        <article class="feature recruitment-card"><span class="feature-label">Recruiting now</span><strong>Healers &amp; dependable DPS</strong><p>We welcome exceptional applicants of every class, with particular interest in players who enjoy organized group content.</p><a href="index.html?login=1&amp;signup=1">Create an account and apply →</a></article>
         <article class="feature"><strong>Progress Together</strong><p>Mythic+, raids, delves, and more—organized around cooperation and steady improvement.</p></article>
         <article class="feature"><strong>Respect the Team</strong><p>Clear expectations keep our Discord, events, and everyday play welcoming and focused.</p></article>
       </section>
@@ -66,6 +66,6 @@
       </div>
     </div>
   </main>
-  <script src="supabase-config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="site-shell.js?v=account-corner-20260817-1"></script><script src="script.js"></script><script src="home-auth.js?v=home-login-20260817-1"></script><script src="supabase-shared.js?v=account-corner-20260817-1"></script>
+  <script src="supabase-config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="site-shell.js?v=membership-approval-20260818-1"></script><script src="script.js"></script><script src="home-auth.js?v=membership-approval-20260818-1"></script><script src="supabase-shared.js?v=membership-approval-20260818-1"></script>
 </body>
 </html>

@@ -14,21 +14,22 @@ Create the replacement Supabase project and wait for its database to finish prov
 ## 2. Create the guild tables
 
 Open **SQL Editor**, paste the complete contents of `supabase-schema.sql`, and
-run it once. Then run `supabase-shared-migration.sql` and
-`supabase-officer-command-migration.sql`, in that order.
+run it once. Then run `supabase-shared-migration.sql`,
+`supabase-officer-command-migration.sql`, and
+`supabase-membership-approval-migration.sql`, in that order.
 
 The script creates:
 
 - private member profiles;
 - protected guild ranks and membership statuses;
 - multiple characters per account;
-- automatic profile creation after signup;
+- automatic pending profile and guild-application creation during signup;
 - row-level security policies;
 - leadership access for Guild Master and Co-Guild Master.
 - a shared event calendar with character-based RSVPs and role caps;
 - a live approved-member directory;
 - shared guild announcements;
-- recruitment applications with an acceptance-to-membership workflow;
+- required signup applications with an acceptance-to-membership workflow;
 - protected event and announcement management for authorized officers.
 - shared rules, raid rosters, attendance, website content, member administration,
   and officer audit history.
@@ -78,19 +79,19 @@ applications through `guild-admin.html`.
 
 - Passwords are handled by Supabase Auth and are never stored in the website.
 - Profiles and characters are protected by row-level security.
-- Members can only change their own profile and characters.
+- Only accepted members can create characters, update profiles, or enter member pages.
 - Guild Master and Co-Guild Master can read member records.
 - Guild Master, Co-Guild Master, Raid Officer, and Event Officer can access
   Shared Operations.
 - Calendar changes, RSVP limits, membership activation, and officer checks are
   enforced by the database rather than by browser-only controls.
 - Guild ranks are stored separately from editable profile data, preventing self-promotion.
-- New accounts start as pending Recruits.
+- New accounts start as pending Recruits with member access locked until leadership accepts their application.
 
 ## Shared-system pages
 
 - `schedule.html` — shared events and character-based RSVPs.
 - `members.html` — live directory for active guild members.
 - `index.html` — shared guild announcements.
-- `recruitment.html` — public application submission.
+- `index.html?login=1&signup=1` — account creation and required guild application.
 - `guild-admin.html` — the secure officer command center.
