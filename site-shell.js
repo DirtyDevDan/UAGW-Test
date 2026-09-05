@@ -150,18 +150,21 @@
   const officerRanks = new Set(["Guild Master", "Co-Guild Master", "Raid Officer", "Event Officer"]);
   const applyAuthUI = (session, membership = null, verified = false) => {
     const signedIn = Boolean(session?.user);
-    const approved = membership?.status === "active" && (!memberOnlyPages.has(current) || verified);
+    const cachedApproved = membership?.status === "active";
+    const approved = cachedApproved && (!memberOnlyPages.has(current) || verified);
     activeUserId = session?.user?.id || null;
     accountCorner.hidden = !signedIn;
     loginLinks.hidden = signedIn;
-    memberGroup.hidden = !signedIn || !approved;
-    officerGroup.hidden = !signedIn || !approved || !officerRanks.has(membership.guild_rank);
+    // Cached membership keeps navigation steady while protected page content
+    // remains hidden until the server confirms current access.
+    memberGroup.hidden = !signedIn || !cachedApproved;
+    officerGroup.hidden = !signedIn || !cachedApproved || !officerRanks.has(membership.guild_rank);
     document.body.classList.toggle("ua-authenticated", signedIn);
     document.body.classList.toggle("ua-member-approved", approved);
     document.body.classList.toggle("ua-auth-resolved", true);
     if (signedIn) {
-      accountCornerCopy.textContent = approved ? membership.guild_rank : "Application under review";
-      dashboardLink.textContent = approved ? "My Dashboard" : "Application Status";
+      accountCornerCopy.textContent = cachedApproved ? membership.guild_rank : "Application under review";
+      dashboardLink.textContent = cachedApproved ? "My Dashboard" : "Application Status";
       accountCorner.title = session.user.email || "Signed-in member account";
     }
     window.dispatchEvent(new CustomEvent("ua-auth-ui", { detail: { signedIn, session, membership } }));
