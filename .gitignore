@@ -10,3 +10,8 @@ portal.js
 Thumbs.db
 .vscode/
 .idea/
+.wrangler/
+node_modules/
+.dev.vars
+admin-setup-key.txt
+worker-configuration.d.ts

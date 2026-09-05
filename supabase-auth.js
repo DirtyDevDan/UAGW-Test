@@ -65,7 +65,7 @@
   }
   if (!window.supabase?.createClient) {
     show(setup);
-    document.getElementById("setup-error").textContent = "The Supabase client could not load. Check your internet connection and try again.";
+    document.getElementById("setup-error").textContent = "The guild API client could not load. Check your connection and try again.";
     return;
   }
 
@@ -88,7 +88,7 @@
     ]);
     if (profileError || membershipError || applicationError) {
       show(setup);
-      document.getElementById("setup-error").textContent = "Connected to Supabase, but the guild tables are unavailable. Run supabase-schema.sql in the SQL Editor.";
+      document.getElementById("setup-error").textContent = "The guild account service could not load your profile. Please try again shortly.";
       return;
     }
     profile = profileData; membership = membershipData;

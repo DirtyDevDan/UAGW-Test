@@ -1,13 +1,14 @@
 # United Azeroth Guild Website
 
-An Alliance-focused guild website connected to Supabase for member accounts,
+An Alliance-focused guild website backed by a Cloudflare Worker and D1 for member accounts,
 multiple characters, shared events, RSVPs, announcements, member listings, and
 leader-approved membership applications.
 
 ## Start locally
 
-Serve this folder with any static web server, then open `index.html`. The site
-has no build step and no installed runtime dependencies.
+Install the Worker tooling with `npm install`, run the D1 migrations with
+`npm run db:local`, then run `npm run dev`. Serve this folder on port 4173 with
+any static web server and open `index.html`.
 
 ## Main areas
 
@@ -19,5 +20,6 @@ has no build step and no installed runtime dependencies.
   rosters, attendance, member access, recruitment, announcements, website
   content, and audit history.
 
-The connected database has already been migrated. See `SUPABASE_SETUP.md` when
-moving the site to another Supabase project.
+The production D1 database has already been migrated. See `CLOUDFLARE_SETUP.md`
+for deployment, migration, and first-administrator instructions. The old
+`SUPABASE_SETUP.md` remains only as migration history.

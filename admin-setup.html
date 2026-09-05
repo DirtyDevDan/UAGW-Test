@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>United Azeroth | First Admin Setup</title>
+  <link rel="stylesheet" href="style.css?v=officer-bio-fade-20260819-1">
+</head>
+<body>
+  <div data-site-shell data-current=""></div>
+  <main class="page" id="main">
+    <div class="page-inner narrow-page">
+      <header class="content-header"><div><p class="eyebrow">One-time setup</p><h1 class="page-title">Create the first Guild Master</h1><p class="lede">This page works only until the first administrator is created. Use the private setup key generated during deployment.</p></div></header>
+      <section class="panel auth-panel">
+        <form id="admin-bootstrap-form" class="auth-form">
+          <label>Setup key<input id="admin-setup-key" type="password" autocomplete="one-time-code" required></label>
+          <label>Display name<input id="admin-display-name" autocomplete="name" maxlength="80" required></label>
+          <label>Discord name<input id="admin-discord-name" maxlength="80"></label>
+          <label>Email<input id="admin-email" type="email" autocomplete="email" required></label>
+          <label>Password<input id="admin-password" type="password" autocomplete="new-password" minlength="10" required></label>
+          <label>Confirm password<input id="admin-password-confirm" type="password" autocomplete="new-password" minlength="10" required></label>
+          <p class="form-message" id="admin-setup-message" role="status"></p>
+          <button class="button" type="submit">Create Guild Master</button>
+        </form>
+      </section>
+    </div>
+  </main>
+  <script src="supabase-config.js"></script><script src="api-client.js"></script><script src="site-shell.js?v=cloudflare-api-20260905-1"></script><script src="admin-setup.js"></script>
+</body>
+</html>
