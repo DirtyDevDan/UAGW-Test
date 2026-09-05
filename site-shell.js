@@ -7,6 +7,9 @@
   if (memberOnlyPages.has(current)) document.body.classList.add("ua-member-gated");
   const config = window.UNITED_AZEROTH_SUPABASE;
   const readCachedSession = () => {
+    // The Cloudflare compatibility client owns the current session. Reading it
+    // synchronously keeps authenticated navigation stable between page loads.
+    if (window.uaGuildApi?.readSession) return window.uaGuildApi.readSession();
     if (!config?.url) return false;
     try {
       const projectRef = new URL(config.url).hostname.split(".")[0];

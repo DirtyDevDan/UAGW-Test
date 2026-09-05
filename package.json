@@ -6,7 +6,7 @@
     "deploy": "wrangler deploy",
     "db:local": "wrangler d1 migrations apply united-azeroth-guild --local",
     "db:remote": "wrangler d1 migrations apply united-azeroth-guild --remote",
-    "check": "node --check worker/src/index.js && node --check api-client.js && node --check worker/test-integration.mjs",
+    "check": "node --check worker/src/index.js && node --check api-client.js && node --check site-shell.js && node --check worker/test-integration.mjs",
     "test:integration": "node worker/test-integration.mjs"
   },
   "devDependencies": {
