@@ -10,11 +10,24 @@
     container.querySelector(".retry-button").addEventListener("click", retry);
   };
 
+  const renderOfflineAnnouncements = (container) => {
+    container.innerHTML = `<article class="announcement-card panel"><span>Service notice</span><h3>Guild services are temporarily offline</h3><p>The public website is still available. Live announcements, accounts, event sign-ups, and officer tools will return when the guild database is back online.</p></article>`;
+  };
+
+  const renderOfflineHomepageEvents = (container) => {
+    const fallbackEvents = [
+      { category: "mythic", title: "Mythic+ Vault Night", schedule: "Weekly guild event", location: "Check Discord for current details" },
+      { category: "raid", title: "Progression Raid", schedule: "Scheduled raid night", location: "Check Discord for current details" },
+      { category: "social", title: "Guild Community Night", schedule: "Community event", location: "Check Discord for current details" }
+    ];
+    container.innerHTML = fallbackEvents.map((event) => `<article class="home-event-card panel" style="--event-color:${categoryColors[event.category]}"><time>${escapeHtml(event.schedule)}</time><strong>${escapeHtml(event.title)}</strong><span>${escapeHtml(event.location)}</span></article>`).join("");
+  };
+
   async function loadAnnouncements() {
     const container = document.getElementById("public-announcements");
     if (!container) return;
     const { data, error } = await db.from("guild_announcements").select("*").eq("published", true).order("pinned", { ascending: false }).order("published_at", { ascending: false }).limit(3);
-    if (error) { showError(container, "Guild announcements are temporarily unavailable.", loadAnnouncements); return; }
+    if (error) { renderOfflineAnnouncements(container); return; }
     container.innerHTML = data.length ? data.map((item) => `<article class="announcement-card panel"><span>${escapeHtml(item.category)}${item.pinned ? " · Pinned" : ""}</span><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.body)}</p></article>`).join("") : `<p class="empty-state">No announcements have been published yet.</p>`;
   }
 
@@ -22,7 +35,7 @@
     const container = document.getElementById("home-upcoming-events");
     if (!container) return;
     const { data, error } = await db.from("guild_events").select("*").eq("status", "published").order("starts_at");
-    if (error) { showError(container, "Upcoming events could not be loaded.", loadHomepageEvents); return; }
+    if (error) { renderOfflineHomepageEvents(container); return; }
     const now = new Date();
     const nextDate = (event) => {
       const date = new Date(event.starts_at);
@@ -95,7 +108,14 @@
     const categories = { raid:["Raid","#f3d384"],mythic:["Mythic+","#67c9ff"],pvp:["PvP","#ff7b7b"],transmog:["Transmog","#c39bff"],meeting:["Meeting","#72db9b"],social:["Social","#ff9dd1"] };
     const state = { month:new Date().getMonth(),year:new Date().getFullYear(),active:new Set(Object.keys(categories)),events:[],current:null,characters:[] };
     const { data: events, error } = await db.from("guild_events").select("*").eq("status","published").order("starts_at");
-    if (error) { showError(grid, "The shared calendar is temporarily unavailable.", loadCalendar); document.getElementById("upcoming-list").innerHTML = `<p class="empty-state">The agenda could not be loaded.</p>`; return; }
+    if (error) {
+      window.uaRenderStaticCalendar?.();
+      const signupMessage = document.getElementById("signup-message");
+      if (signupMessage) signupMessage.textContent = "RSVP is unavailable while guild services are offline. Please use Discord to reserve a spot.";
+      const signupButton = document.querySelector("#event-signup-form button[type='submit']");
+      if (signupButton) signupButton.disabled = true;
+      return;
+    }
     state.events = events || [];
     const { data:{ user } } = await db.auth.getUser();
     if (user) { const { data } = await db.from("characters").select("*").eq("user_id",user.id).order("is_main",{ascending:false}); state.characters=data||[]; }

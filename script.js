@@ -34,7 +34,9 @@ document.querySelectorAll("dialog").forEach((dialog) => {
 
 const calendarGrid = document.getElementById("calendar-grid");
 
-if (calendarGrid && !document.documentElement.hasAttribute("data-shared-calendar")) {
+const renderStaticCalendar = () => {
+  if (!calendarGrid || calendarGrid.dataset.staticCalendarReady === "true") return;
+  calendarGrid.dataset.staticCalendarReady = "true";
   const categories = {
     raid: { label: "Raid", color: "#f3d384" },
     mythic: { label: "Mythic+", color: "#67c9ff" },
@@ -169,8 +171,10 @@ if (calendarGrid && !document.documentElement.hasAttribute("data-shared-calendar
     }
 
     upcomingList.replaceChildren();
-    events.slice(0, 3).forEach((event) => upcomingList.append(createEventButton(event, true)));
-    if (!events.length) {
+    const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const upcomingEvents = events.filter((event) => event.date >= startOfToday).sort((a, b) => a.date - b.date).slice(0, 3);
+    upcomingEvents.forEach((event) => upcomingList.append(createEventButton(event, true)));
+    if (!upcomingEvents.length) {
       upcomingList.innerHTML = `<p class="empty-state">No events match these filters. Choose another category to bring adventures back into view.</p>`;
     }
   };
@@ -192,7 +196,10 @@ if (calendarGrid && !document.documentElement.hasAttribute("data-shared-calendar
 
   renderFilters();
   renderCalendar();
-}
+};
+
+window.uaRenderStaticCalendar = renderStaticCalendar;
+if (calendarGrid && !document.documentElement.hasAttribute("data-shared-calendar")) renderStaticCalendar();
 
 try {
   const savedRules = JSON.parse(localStorage.getItem("uaGuildRules"));
