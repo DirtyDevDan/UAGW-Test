@@ -1,7 +1,8 @@
 const OFFICER_RANKS = new Set(["Guild Master", "Co-Guild Master", "Raid Officer", "Event Officer"]);
 const LEADER_RANKS = new Set(["Guild Master", "Co-Guild Master"]);
 const SESSION_DAYS = 30;
-const PASSWORD_ITERATIONS = 120000;
+// Cloudflare Workers Web Crypto currently caps PBKDF2 at 100,000 iterations.
+const PASSWORD_ITERATIONS = 100000;
 
 const TABLES = {
   profiles: ["user_id", "display_name", "discord_name", "bio", "visibility", "created_at", "updated_at"],

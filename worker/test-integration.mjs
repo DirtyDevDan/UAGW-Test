@@ -1,7 +1,10 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 
 const base = process.env.UA_API_URL || "http://127.0.0.1:8787";
 const origin = "http://127.0.0.1:4173";
+const workerSource = await readFile(new URL("./src/index.js", import.meta.url), "utf8");
+assert.match(workerSource, /const PASSWORD_ITERATIONS = 100000;/, "PBKDF2 must stay within Cloudflare's 100,000-iteration limit");
 
 async function call(path, { token, body, method = body ? "POST" : "GET" } = {}) {
   const response = await fetch(`${base}${path}`, {
